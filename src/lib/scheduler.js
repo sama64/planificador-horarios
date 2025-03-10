@@ -199,6 +199,7 @@ function estimateMinPeriods(graph, classOrder) {
 export async function scheduleClasses(classes, userPreferences = {}) {
   // Apply user preferences to filter out undesired schedule options
   console.log('Applying user preferences to class options...');
+  console.log('Using timeout setting:', userPreferences.timeout || '180000 (default)', 'ms');
   const filteredClasses = classes.map(cls => {
     let filteredOptions = [...cls.scheduleOptions];
     
@@ -438,7 +439,7 @@ export async function scheduleClasses(classes, userPreferences = {}) {
     console.log('Solving ILP problem...');
     
     // Create a promise with timeout
-    const timeoutDuration = 180000; // 180 seconds
+    const timeoutDuration = userPreferences.timeout || 180000; // Use user-defined timeout or default to 180 seconds
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => reject(new Error('ILP solving timed out')), timeoutDuration);
     });
@@ -529,7 +530,7 @@ export async function scheduleClasses(classes, userPreferences = {}) {
         console.log('ILP timed out, attempting fallback heuristic solution...');
         return {
           success: false,
-          error: 'El cálculo está tomando demasiado tiempo. Por favor, reduzca el número de clases o simplifique sus preferencias.'
+          error: `El cálculo excedió el tiempo límite de ${timeoutDuration/1000} segundos. Por favor, reduzca el número de clases, simplifique sus preferencias o aumente el tiempo máximo de cálculo.`
         };
       }
       
@@ -545,4 +546,4 @@ export async function scheduleClasses(classes, userPreferences = {}) {
       error: error.message
     };
   }
-} 
+}

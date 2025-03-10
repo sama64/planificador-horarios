@@ -2,7 +2,7 @@
   import { classData, userPreferences, eligibleClasses } from '../stores';
   import ClassCard from './ClassCard.svelte';
   
-  let showAll = false;
+  let showAll = true;
   let searchQuery = '';
   
   $: filteredClasses = showAll 
@@ -44,7 +44,12 @@
     
     <div class="form-control">
       <label class="cursor-pointer label">
-        <span class="label-text mr-2">Mostrar todas las asignaturas</span> 
+        <span class="label-text mr-2">
+          {showAll ? 'Mostrando todas las asignaturas' : 'Mostrando solo asignaturas disponibles'}
+          <div class="tooltip tooltip-right" data-tip={showAll ? 'Incluye todas las asignaturas, incluso las que tienen prerrequisitos pendientes' : 'Solo asignaturas cuyos prerrequisitos ya están aprobados'}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 stroke-current ml-1"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          </div>
+        </span> 
         <input type="checkbox" class="toggle toggle-primary" bind:checked={showAll} />
       </label>
     </div>
@@ -82,7 +87,13 @@
     
     {#if searchResults.length === 0}
       <div class="col-span-full text-center py-8">
-        <p class="text-gray-500">No se encontraron asignaturas que coincidan con la búsqueda.</p>
+        {#if searchQuery}
+          <p class="text-gray-500">No se encontraron asignaturas que coincidan con la búsqueda "{searchQuery}".</p>
+        {:else if !showAll && $eligibleClasses.length === 0}
+          <p class="text-gray-500">No hay asignaturas disponibles. Marque algunas asignaturas como aprobadas para desbloquear nuevas asignaturas.</p>
+        {:else}
+          <p class="text-gray-500">No se encontraron asignaturas con los filtros actuales.</p>
+        {/if}
       </div>
     {/if}
   </div>

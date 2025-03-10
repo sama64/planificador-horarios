@@ -44,7 +44,7 @@
           {classData.name}
         </span>
       </h2>
-      <div class="badge badge-neutral">{classData.hours} horas</div>
+      <div class="badge badge-neutral">{classData.hours} hs</div>
     </div>
     
     {#if showDetails}

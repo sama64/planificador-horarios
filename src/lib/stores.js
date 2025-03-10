@@ -10,6 +10,7 @@ export const userPreferences = writable({
   timePreference: null, // "morning", "afternoon", "evening"
   maxClassesPerPeriod: null, // Maximum number of classes per period
   passedClasses: [], // IDs of classes already passed
+  timeout: 180000, // Timeout in milliseconds (default: 3 minutes)
 });
 
 // Store for scheduling results
