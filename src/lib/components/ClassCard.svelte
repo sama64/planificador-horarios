@@ -38,7 +38,7 @@
     <div class="flex justify-between items-start gap-2">
       <h2 class="card-title text-lg font-medium flex items-center gap-2 flex-wrap">
         {#if passed}
-          <span class="badge badge-success">Aprobada</span>
+          <span class="badge badge-success">Regular</span>
         {/if}
         <span class={passed ? "line-through opacity-70" : ""}>
           {classData.name}

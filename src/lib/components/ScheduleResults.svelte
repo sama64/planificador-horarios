@@ -64,7 +64,7 @@
       <div>
         <span class="font-semibold">Sugerencias:</span>
         <ul class="list-disc ml-6 mt-1">
-          <li>Marque más asignaturas como ya aprobadas</li>
+          <li>Marque más asignaturas como regulares</li>
           <li>Reduzca las restricciones de días a evitar</li>
           <li>Intente con preferencias de horario diferentes</li>
         </ul>

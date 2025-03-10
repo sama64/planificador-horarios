@@ -118,7 +118,7 @@
       <h2 class="card-title">Cómo usar el planificador</h2>
       
       <ol class="list-decimal list-inside space-y-2 mt-4">
-        <li>Seleccione las asignaturas que ya ha aprobado haciendo clic en ellas.</li>
+        <li>Seleccione las asignaturas que ya tiene regular haciendo clic en ellas.</li>
         <li>Configure sus preferencias de horario (días a evitar, franja horaria preferida).</li>
         <li>Haga clic en "Calcular Horario Óptimo" para generar su plan de estudios.</li>
         <li>El sistema calculará el número mínimo de períodos necesarios para graduarse.</li>

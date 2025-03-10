@@ -60,7 +60,7 @@
       <div class="stat-figure text-primary">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
       </div>
-      <div class="stat-title text-sm md:text-base">Aprobadas</div>
+      <div class="stat-title text-sm md:text-base">Regulares</div>
       <div class="stat-value text-2xl md:text-3xl">{$userPreferences.passedClasses.length}</div>
       <div class="stat-desc text-xs">de {$classData.length} totales</div>
     </div>
@@ -90,7 +90,7 @@
         {#if searchQuery}
           <p class="text-gray-500">No se encontraron asignaturas que coincidan con la búsqueda "{searchQuery}".</p>
         {:else if !showAll && $eligibleClasses.length === 0}
-          <p class="text-gray-500">No hay asignaturas disponibles. Marque algunas asignaturas como aprobadas para desbloquear nuevas asignaturas.</p>
+          <p class="text-gray-500">No hay asignaturas disponibles. Marque algunas asignaturas como regulares para desbloquear nuevas asignaturas.</p>
         {:else}
           <p class="text-gray-500">No se encontraron asignaturas con los filtros actuales.</p>
         {/if}
