@@ -261,7 +261,7 @@ export async function scheduleClasses(classes, userPreferences = {}) {
     
     // Smart estimation of maximum periods needed
     const MIN_PERIODS = estimateMinPeriods(graph, classOrder);
-    const MAX_PERIODS = Math.min(filteredClasses.length, MIN_PERIODS * 2);
+    const MAX_PERIODS = Math.min(10, Math.max(filteredClasses.length, MIN_PERIODS + 4));
     console.log(`Estimated periods needed: ${MIN_PERIODS}, max periods to consider: ${MAX_PERIODS}`);
     
     // Create GLPK problem
@@ -438,25 +438,38 @@ export async function scheduleClasses(classes, userPreferences = {}) {
     console.log('Solving ILP problem...');
     
     // Create a promise with timeout
-    const timeoutDuration = 60000; // 60 seconds timeout
+    const timeoutDuration = 180000; // 180 seconds
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => reject(new Error('ILP solving timed out')), timeoutDuration);
     });
     
     try {
       // Race the solve promise against the timeout
+      let solveOptions = { 
+        msglev: glpk.GLP_MSG_ALL,   // Verbose output
+        presol: true,               // Use presolver to simplify the problem
+        tmlim: timeoutDuration/1000 // Set time limit in seconds directly in GLPK
+      };
+      
       const result = await Promise.race([
-        glpk.solve(lp),
+        glpk.solve(lp, solveOptions),
         timeoutPromise
       ]);
       
-      console.log('ILP solution status:', result.status);
+      console.log('ILP solution details:', result);
+      console.log('ILP solution status:', result?.status);
       
-      if (result.status === glpk.GLP_OPT) {
+      // Check if we have a valid result - looking at both status and the solution values
+      // The key is to check if there's a valid result object even if status is undefined
+      if ((result && (result.status === glpk.GLP_OPT || result.status === 5)) || 
+          (result && result.result && Object.keys(result.result.vars || {}).length > 0)) {
+        
         // Extract the solution
         console.log('Extracting solution...');
         const schedule = {};
         let maxPeriod = 0;
+        
+        const vars = result.result?.vars || result.vars;
         
         // For each class, determine period and schedule option
         filteredClasses.forEach(cls => {
@@ -465,7 +478,7 @@ export async function scheduleClasses(classes, userPreferences = {}) {
           for (let opt = 0; opt < cls.scheduleOptions.length && !assigned; opt++) {
             for (let period = 1; period <= MAX_PERIODS && !assigned; period++) {
               const varName = classVars[cls.id][opt][period];
-              if (Math.round(result.vars[varName]) === 1) {
+              if (vars && Math.round(vars[varName]) === 1) {
                 schedule[cls.id] = {
                   period,
                   scheduleOption: cls.scheduleOptions[opt],
@@ -497,15 +510,20 @@ export async function scheduleClasses(classes, userPreferences = {}) {
           totalPeriods: maxPeriod
         };
       } else {
-        console.error('No optimal solution found, status:', result.status);
+        // Handle the error case with more diagnostics
+        console.error('Solver failed. Result:', result);
+        console.error('Problem size:', lp.objective.vars.length, 'variables,', lp.subjectTo.length, 'constraints');
+        
+        // Try a simpler version of the problem if full one failed
         return {
           success: false,
-          error: 'Could not find an optimal solution'
+          error: 'No se pudo procesar la solución. Intente nuevamente con un conjunto más pequeño de clases.'
         };
       }
     } catch (error) {
       console.error('Error solving ILP:', error);
       
+      // More detailed error handling...
       // If it's a timeout, try a fallback heuristic approach
       if (error.message === 'ILP solving timed out') {
         console.log('ILP timed out, attempting fallback heuristic solution...');
