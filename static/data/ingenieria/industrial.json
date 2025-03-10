@@ -1,0 +1,137 @@
+[
+  {
+    "id": 1,
+    "name": "Cálculo I",
+    "hours": 4,
+    "prerequisites": [],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "08:00",
+        "endTime": "10:00"
+      },
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "14:00",
+        "endTime": "16:00"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Química General",
+    "hours": 4,
+    "prerequisites": [],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "10:00",
+        "endTime": "12:00"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Álgebra Lineal",
+    "hours": 3,
+    "prerequisites": [],
+    "scheduleOptions": [
+      {
+        "days": ["Viernes"],
+        "startTime": "08:00",
+        "endTime": "11:00"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Física I",
+    "hours": 4,
+    "prerequisites": [],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "14:00",
+        "endTime": "16:00"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Cálculo II",
+    "hours": 4,
+    "prerequisites": [1],
+    "scheduleOptions": [
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "08:00",
+        "endTime": "10:00"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Física II",
+    "hours": 4,
+    "prerequisites": [4],
+    "scheduleOptions": [
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "10:00",
+        "endTime": "12:00"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Termodinámica",
+    "hours": 4,
+    "prerequisites": [2, 4],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "16:00",
+        "endTime": "18:00"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Resistencia de Materiales",
+    "hours": 4,
+    "prerequisites": [4, 5],
+    "scheduleOptions": [
+      {
+        "days": ["Viernes"],
+        "startTime": "14:00",
+        "endTime": "18:00"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Investigación de Operaciones",
+    "hours": 4,
+    "prerequisites": [3, 5],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "18:00",
+        "endTime": "20:00"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Gestión de Calidad",
+    "hours": 4,
+    "prerequisites": [7, 9],
+    "scheduleOptions": [
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "18:00",
+        "endTime": "20:00"
+      }
+    ]
+  }
+] 

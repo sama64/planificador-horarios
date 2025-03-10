@@ -1,6 +1,11 @@
 import { writable, derived } from 'svelte/store';
 import { scheduleClasses } from './scheduler';
 
+// Store for the faculty and curriculum selection
+export const selectedFaculty = writable(null);
+export const selectedCurriculum = writable(null);
+export const selectionComplete = writable(false);
+
 // Store for the class data
 export const classData = writable([]);
 
@@ -24,15 +29,33 @@ export const scheduleResults = writable({
 });
 
 // Function to load class data from a JSON file
-export async function loadClassData(filePath) {
+export async function loadClassData() {
   try {
+    // Get the currently selected faculty and curriculum
+    let faculty, curriculum;
+    selectedFaculty.subscribe(value => { faculty = value; })();
+    selectedCurriculum.subscribe(value => { curriculum = value; })();
+    
+    if (!faculty || !curriculum) {
+      console.error('No faculty or curriculum selected');
+      throw new Error('No se ha seleccionado una facultad o carrera');
+    }
+    
+    // Construct the file path - make sure it has the right prefix for static files
+    const filePath = `/data/${faculty}/${curriculum}.json`;
     console.log('Loading class data from:', filePath);
+    
+    // Explicitly log the fetch for debugging
+    console.log('Fetching from URL:', window.location.origin + filePath);
+    
     const response = await fetch(filePath);
     if (!response.ok) {
-      throw new Error(`Failed to load class data: ${response.statusText}`);
+      console.error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+      throw new Error(`No se pudieron cargar los datos: ${response.statusText}`);
     }
     
     let data = await response.json();
+    console.log('Loaded JSON data successfully');
     
     // Add passed property to each class if not present
     data = data.map(cls => ({
@@ -45,7 +68,8 @@ export async function loadClassData(filePath) {
     return data;
   } catch (error) {
     console.error('Error loading class data:', error);
-    return [];
+    classData.set([]); // Asegurarse de que el store tenga un valor válido
+    throw error; // Re-lanzar el error para que pueda ser manejado por el componente
   }
 }
 

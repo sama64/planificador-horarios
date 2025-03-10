@@ -117,7 +117,7 @@
     <div class="card bg-base-100 shadow-xl">
       <div class="card-body text-center">
         <h2 class="card-title justify-center">No hay resultados de horario</h2>
-        <p>Configure sus preferencias y haga clic en "Calcular Horario" para generar un horario óptimo.</p>
+        <p>Seleccione sus asignaturas regulares y haga clic en "Calcular Horario" para generar un horario óptimo.</p>
       </div>
     </div>
   {/if}

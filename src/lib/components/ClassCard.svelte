@@ -35,8 +35,8 @@
   on:click={onClick}
 >
   <div class="card-body p-4">
-    <div class="flex justify-between items-start">
-      <h2 class="card-title text-lg font-medium flex items-center gap-2">
+    <div class="flex justify-between items-start gap-2">
+      <h2 class="card-title text-lg font-medium flex items-center gap-2 flex-wrap">
         {#if passed}
           <span class="badge badge-success">Aprobada</span>
         {/if}
@@ -44,7 +44,7 @@
           {classData.name}
         </span>
       </h2>
-      <div class="badge badge-neutral">{classData.hours} hs</div>
+      <div class="badge badge-neutral whitespace-nowrap flex-shrink-0">{classData.hours} hs</div>
     </div>
     
     {#if showDetails}

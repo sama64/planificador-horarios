@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "name": "Cálculo I",
+    "hours": 4,
+    "prerequisites": [],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "08:00",
+        "endTime": "10:00"
+      },
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "14:00",
+        "endTime": "16:00"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Programación I",
+    "hours": 4,
+    "prerequisites": [],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "10:00",
+        "endTime": "12:00"
+      },
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "16:00",
+        "endTime": "18:00"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Álgebra Lineal",
+    "hours": 3,
+    "prerequisites": [],
+    "scheduleOptions": [
+      {
+        "days": ["Viernes"],
+        "startTime": "08:00",
+        "endTime": "11:00"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Física I",
+    "hours": 4,
+    "prerequisites": [],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "14:00",
+        "endTime": "16:00"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Cálculo II",
+    "hours": 4,
+    "prerequisites": [1],
+    "scheduleOptions": [
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "08:00",
+        "endTime": "10:00"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Programación II",
+    "hours": 4,
+    "prerequisites": [2],
+    "scheduleOptions": [
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "10:00",
+        "endTime": "12:00"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Estructuras de Datos",
+    "hours": 4,
+    "prerequisites": [2, 6],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "16:00",
+        "endTime": "18:00"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Bases de Datos",
+    "hours": 4,
+    "prerequisites": [6],
+    "scheduleOptions": [
+      {
+        "days": ["Viernes"],
+        "startTime": "14:00",
+        "endTime": "18:00"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Redes de Computadoras",
+    "hours": 4,
+    "prerequisites": [4, 6],
+    "scheduleOptions": [
+      {
+        "days": ["Lunes", "Miércoles"],
+        "startTime": "18:00",
+        "endTime": "20:00"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Ingeniería de Software",
+    "hours": 4,
+    "prerequisites": [6, 8],
+    "scheduleOptions": [
+      {
+        "days": ["Martes", "Jueves"],
+        "startTime": "18:00",
+        "endTime": "20:00"
+      }
+    ]
+  }
+] 
