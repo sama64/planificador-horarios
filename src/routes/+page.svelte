@@ -53,7 +53,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     <div class="lg:col-span-1 space-y-4">
       <div class="text-center lg:text-left">
-        <h1 class="text-2xl font-bold mb-2">Planificador de Horarios</h1>
+        <h1 class="text-2xl font-bold mb-2 hidden md:block">Planificador de Horarios</h1>
         <p class="text-base-content/70">Optimice su plan de estudios con el mínimo número de cuatrimestes.</p>
         
         <!-- Aviso de desarrollo -->

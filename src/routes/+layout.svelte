@@ -12,10 +12,12 @@
 			<a href="/" class="btn btn-ghost normal-case text-xl">Planificador de Horarios</a>
 		</div>
 		<div class="flex-none">
+			<!-- Enlaces ocultos temporalmente
 			<ul class="menu menu-horizontal px-1">
 				<li><a href="/">Inicio</a></li>
 				<li><a href="/about">Acerca de</a></li>
 			</ul>
+			-->
 		</div>
 	</div>
 
