@@ -14,43 +14,56 @@
   
   <ul>
     <li>
-      <strong>Optimización matemática:</strong> Utiliza Programación Lineal Entera (ILP) a través de GLPK.js para
-      encontrar la solución óptima que minimice el número de períodos académicos.
+      <strong>Algoritmo ultra-rápido:</strong> Utiliza un algoritmo basado en grafos dirigidos acíclicos (DAG) 
+      con backtracking y poda branch-and-bound para encontrar soluciones óptimas o casi-óptimas en segundos.
     </li>
     <li>
       <strong>Respeto de prerrequisitos:</strong> Garantiza que todas las restricciones de prerrequisitos
-      entre asignaturas se cumplan.
+      entre asignaturas se cumplan mediante ordenamiento topológico.
     </li>
     <li>
       <strong>Evita conflictos de horario:</strong> Asegura que no haya superposiciones de horarios
       entre las asignaturas programadas en el mismo período.
     </li>
     <li>
-      <strong>Personalización:</strong> Permite establecer preferencias como días a evitar
-      o franjas horarias preferidas.
+      <strong>Personalización inteligente:</strong> Permite establecer preferencias como días a evitar,
+      franjas horarias preferidas y número máximo de materias por período.
+    </li>
+    <li>
+      <strong>Rendimiento excepcional:</strong> Calcula horarios complejos en segundos en lugar de minutos,
+      proporcionando respuestas inmediatas al usuario.
     </li>
   </ul>
   
   <h2>Cómo funciona</h2>
   
   <p>
-    La aplicación modela el problema de programación de horarios como un problema de optimización matemática,
-    donde se busca minimizar el número total de períodos necesarios mientras se respetan todas las restricciones:
+    La aplicación utiliza un algoritmo avanzado de optimización basado en teoría de grafos y técnicas de 
+    búsqueda inteligente para resolver el problema de programación de horarios:
   </p>
   
   <ol>
-    <li>Cada asignatura debe ser programada exactamente una vez.</li>
-    <li>Una asignatura solo puede ser programada después de que todos sus prerrequisitos hayan sido completados.</li>
-    <li>No puede haber conflictos de horario entre asignaturas programadas en el mismo período.</li>
-    <li>Se respetan las preferencias del usuario en la medida de lo posible.</li>
+    <li><strong>Construcción del grafo de dependencias:</strong> Crea un grafo dirigido acíclico (DAG) que representa las relaciones de prerrequisitos entre materias.</li>
+    <li><strong>Cálculo de semestres mínimos:</strong> Determina el semestre más temprano posible para cada materia basado en sus prerrequisitos.</li>
+    <li><strong>Ordenamiento inteligente:</strong> Prioriza las materias más restringidas primero para optimizar las decisiones de asignación.</li>
+    <li><strong>Backtracking con poda:</strong> Usa técnicas de branch-and-bound para explorar eficientemente el espacio de soluciones y encontrar la óptima.</li>
+    <li><strong>Verificación de restricciones:</strong> Asegura que no haya conflictos de horario y que se respeten todas las preferencias del usuario.</li>
   </ol>
+  
+  <h2>Sobre preferencias</h2>
+  
+  <p>
+    Las preferencias del usuario (días a evitar, horarios preferidos, etc.) se aplican como filtros durante 
+    la optimización. Si estas preferencias hacen imposible encontrar una solución válida, el algoritmo las 
+    ignora automáticamente para garantizar que siempre se pueda generar un horario factible.
+  </p>
   
   <h2>Tecnologías utilizadas</h2>
   
   <ul>
     <li><strong>Frontend:</strong> SvelteKit, Tailwind CSS, DaisyUI</li>
-    <li><strong>Optimización:</strong> GLPK.js (Solver de Programación Lineal)</li>
-    <li><strong>Algoritmos:</strong> Programación Lineal Entera (ILP), Ordenamiento Topológico</li>
+    <li><strong>Algoritmos:</strong> Grafos Dirigidos Acíclicos (DAG), Ordenamiento Topológico, Backtracking con Branch-and-Bound</li>
+    <li><strong>Optimización:</strong> Algoritmo greedy inteligente con técnicas de poda para máximo rendimiento</li>
   </ul>
   
   <div class="alert alert-info mt-8">

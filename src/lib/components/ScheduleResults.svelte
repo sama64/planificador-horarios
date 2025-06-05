@@ -78,19 +78,76 @@
       return { day: earliestDay, time: earliestTime };
     }
     
-    return [...classes].sort((a, b) => {
-      const scheduleA = getEarliestDayAndTime(a.scheduleOption);
-      const scheduleB = getEarliestDayAndTime(b.scheduleOption);
-      
-      // First sort by day
-      if (scheduleA.day !== scheduleB.day) {
-        return scheduleA.day - scheduleB.day;
-      }
-      
-      // Then sort by time
-      return scheduleA.time - scheduleB.time;
-    });
-  }
+         return [...classes].sort((a, b) => {
+       const scheduleA = getEarliestDayAndTime(a.scheduleOption);
+       const scheduleB = getEarliestDayAndTime(b.scheduleOption);
+       
+       // First sort by day
+       if (scheduleA.day !== scheduleB.day) {
+         return scheduleA.day - scheduleB.day;
+       }
+       
+       // Then sort by time
+       return scheduleA.time - scheduleB.time;
+     });
+   }
+   
+   // Function to get classes for a specific day
+   function getClassesForDay(classes, targetDay) {
+     function normalizeScheduleOption(scheduleOption) {
+       if (scheduleOption.schedule && Array.isArray(scheduleOption.schedule)) {
+         return scheduleOption.schedule;
+       }
+       
+       if (scheduleOption.days && scheduleOption.startTime && scheduleOption.endTime) {
+         return scheduleOption.days.map(day => ({
+           day,
+           startTime: scheduleOption.startTime,
+           endTime: scheduleOption.endTime
+         }));
+       }
+       
+       return [];
+     }
+     
+     return classes.filter(classInfo => {
+       const normalized = normalizeScheduleOption(classInfo.scheduleOption);
+       return normalized.some(slot => slot.day === targetDay);
+     }).sort((a, b) => {
+       // Sort by start time within the day
+       const timeA = getTimeForDay(a.scheduleOption, targetDay);
+       const timeB = getTimeForDay(b.scheduleOption, targetDay);
+       return timeA.localeCompare(timeB);
+     });
+   }
+   
+   // Function to get formatted time for a specific day
+   function getTimeForDay(scheduleOption, targetDay) {
+     function normalizeScheduleOption(scheduleOption) {
+       if (scheduleOption.schedule && Array.isArray(scheduleOption.schedule)) {
+         return scheduleOption.schedule;
+       }
+       
+       if (scheduleOption.days && scheduleOption.startTime && scheduleOption.endTime) {
+         return scheduleOption.days.map(day => ({
+           day,
+           startTime: scheduleOption.startTime,
+           endTime: scheduleOption.endTime
+         }));
+       }
+       
+       return [];
+     }
+     
+     const normalized = normalizeScheduleOption(scheduleOption);
+     const daySlot = normalized.find(slot => slot.day === targetDay);
+     
+     if (daySlot) {
+       return `${daySlot.startTime} - ${daySlot.endTime}`;
+     }
+     
+     return '';
+   }
   
   // Track how long calculation has been running
   let calculationStartTime = null;
@@ -157,27 +214,77 @@
           <div class="card-body">
             <h2 class="card-title">Período {period}</h2>
             
-            <div class="overflow-x-auto">
-              <table class="table table-zebra w-full">
-                <thead>
-                  <tr>
-                    <th>Asignatura</th>
-                    <th>Horario</th>
-                    <th>Horas</th>
-                    <th>Prerrequisitos</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {#each sortClassesBySchedule(classes) as classInfo}
-                    <tr>
-                      <td>{classInfo.class.name}</td>
-                      <td>{formatSchedule(classInfo.scheduleOption)}</td>
-                      <td>{classInfo.class.hours}</td>
-                      <td>{getPrerequisiteNames(classInfo.class.prerequisites)}</td>
-                    </tr>
-                  {/each}
-                </tbody>
-              </table>
+            <!-- Mobile View: Simple List -->
+            <div class="block md:hidden">
+              <div class="space-y-3">
+                {#each sortClassesBySchedule(classes) as classInfo}
+                  <div class="bg-base-200 p-4 rounded-lg border-l-4 border-primary">
+                    <div class="flex justify-between items-start mb-2">
+                      <h4 class="font-semibold text-lg">{classInfo.class.name}</h4>
+                      <span class="badge badge-primary">{classInfo.class.hours}h</span>
+                    </div>
+                    <div class="text-sm text-base-content/80 mb-2">
+                      📅 {formatSchedule(classInfo.scheduleOption)}
+                    </div>
+                    <div class="text-xs text-base-content/60">
+                      Prerrequisitos: {getPrerequisiteNames(classInfo.class.prerequisites)}
+                    </div>
+                  </div>
+                {/each}
+              </div>
+            </div>
+
+            <!-- Desktop/Tablet View: Calendar Grid -->
+            <div class="hidden md:block">
+              <!-- Days Header -->
+              <div class="grid grid-cols-7 gap-2 mb-4">
+                {#each ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] as day}
+                  <div class="text-center font-semibold p-3 bg-base-200 rounded-lg">
+                    <div class="hidden lg:block">{day}</div>
+                    <div class="lg:hidden">{day.slice(0, 3)}</div>
+                  </div>
+                {/each}
+              </div>
+              
+              <!-- Calendar Grid -->
+              <div class="grid grid-cols-7 gap-2 items-start">
+                {#each ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] as day}
+                  <div class="bg-base-100 border border-base-300 rounded-lg p-2 min-h-[120px] h-full">
+                    {#each getClassesForDay(classes, day) as classInfo}
+                      <div class="mb-2 p-3 bg-primary text-primary-content rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer text-sm"
+                           title="{classInfo.class.name} - {formatSchedule(classInfo.scheduleOption)}">
+                        <div class="font-semibold truncate mb-1">{classInfo.class.name}</div>
+                        <div class="text-xs opacity-90 mb-1">
+                          {getTimeForDay(classInfo.scheduleOption, day)}
+                        </div>
+                        <div class="text-xs opacity-75">{classInfo.class.hours}h</div>
+                      </div>
+                    {/each}
+                  </div>
+                {/each}
+              </div>
+              
+              <!-- Desktop Class Summary -->
+              <div class="mt-6">
+                <details class="collapse collapse-arrow bg-base-200">
+                  <summary class="collapse-title text-lg font-medium">
+                    Ver resumen detallado de clases
+                  </summary>
+                  <div class="collapse-content">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 pt-3">
+                      {#each sortClassesBySchedule(classes) as classInfo}
+                        <div class="bg-base-100 p-3 rounded-lg border">
+                          <div class="font-medium">{classInfo.class.name}</div>
+                          <div class="text-sm text-base-content/70 mt-1">{formatSchedule(classInfo.scheduleOption)}</div>
+                          <div class="text-xs text-base-content/60 mt-1">
+                            {classInfo.class.hours} horas | Prereq: {getPrerequisiteNames(classInfo.class.prerequisites)}
+                          </div>
+                        </div>
+                      {/each}
+                    </div>
+                  </div>
+                </details>
+              </div>
             </div>
           </div>
         </div>

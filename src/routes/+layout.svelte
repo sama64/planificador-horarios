@@ -6,6 +6,10 @@
 	// Ya no cargamos los datos de clases aquí, esto se hace después de que el usuario seleccione facultad y carrera
 </script>
 
+<svelte:head>
+	<title>Planificador de Horarios</title>
+</svelte:head>
+
 <div class="min-h-screen bg-base-100">
 	<div class="navbar bg-primary text-primary-content">
 		<div class="flex-1">
