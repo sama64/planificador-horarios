@@ -1,819 +1,1349 @@
 [
-    {
-      "id": 1,
-      "name": "Medios de Rep. Gráfica I",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes", "Jueves"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Lunes", "Jueves"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": []
-    },
-    {
-      "id": 2,
-      "name": "Intro. a la Ingeniería",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": []
-    },
-    {
-      "id": 3,
-      "name": "Inglés",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Viernes"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Viernes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": []
-    },
-    {
-      "id": 4,
-      "name": "Taller de Informática General y Aplicada",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        }
-      ],
-      "prerequisites": []
-    },
-    {
-      "id": 5,
-      "name": "Medios de Rep. Gráfica II",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes", "Viernes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [1]
-    },
-    {
-      "id": 6,
-      "name": "Fundamentos De los Computadores Digitales",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [4]
-    },
-    {
-      "id": 7,
-      "name": "Higiene y Seguridad en el Trabajo I",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "14:00",
-          "endTime": "16:00"
-        },
-        {
-          "days": ["Martes"],
-          "startTime": "16:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Martes"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        },
-        {
-          "days": ["Jueves"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Jueves"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [2]
-    },
-    {
-      "id": 8,
-      "name": "Intro. a la Gestión del Medio Ambiente",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Jueves"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Jueves"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [2]
-    },
-    {
-      "id": 9,
-      "name": "Economía I",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles"],
-          "startTime": "14:00",
-          "endTime": "16:00"
-        },
-        {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Miércoles"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [2]
-    },
-    {
-      "id": 10,
-      "name": "Matemática I",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Martes", "Viernes"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Martes", "Viernes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": []
-    },
-    {
-      "id": 11,
-      "name": "Intro. a la Gest. de la Innovación y la Tecnología",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles"],
-          "startTime": "16:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Miércoles"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [2, 3, 9]
-    },
-    {
-      "id": 12,
-      "name": "Informática y Programación Industrial",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Sábado"],
-          "startTime": "08:30",
-          "endTime": ""
-        }
-      ],
-      "prerequisites": [6]
-    },
-    {
-      "id": 13,
-      "name": "Legislación y Ejercicio Profesional",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Jueves"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Jueves"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [7]
-    },
-    {
-      "id": 14,
-      "name": "Gestión de la Calidad",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Lunes"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        },
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Martes"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [9]
-    },
-    {
-      "id": 15,
-      "name": "Economía II",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Miércoles"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [9]
-    },
-    {
-      "id": 16,
-      "name": "Física I",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles", "Viernes"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Miércoles", "Viernes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [10]
-    },
-    {
-      "id": 17,
-      "name": "Matemática II",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes", "Jueves"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Lunes", "Jueves"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [10]
-    },
-    {
-      "id": 18,
-      "name": "Fundamentos de Química",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        },
-        {
-          "days": ["Sábado"],
-          "startTime": "08:30",
-          "endTime": "12:30"
-        }
-      ],
-      "prerequisites": [8]
-    },
-    {
-      "id": 19,
-      "name": "Organización y Gestión Industrial",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Lunes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        },
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [14, 15, 5]
-    },
-    {
-      "id": 20,
-      "name": "Física II",
-      "hours": 64,
-      "scheduleOptions": [
+  {
+    "id": 1,
+    "name": "Medios de Rep. Gráfica I",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
           {
-            "days": ["Martes"],
-            "startTime": "18:30",
-            "endTime": "22:30"
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "14:00",
+            "endTime": "18:00"
           }
-      ],
-      "prerequisites": [16]
-    },
-    {
-      "id": 21,
-      "name": "Termodinámica",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Lunes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        },
-        {
-          "days": ["Sábado"],
-          "startTime": "08:30",
-          "endTime": "12:30"
-        }
-      ],
-      "prerequisites": [16, 18]
-    },
-    {
-      "id": 22,
-      "name": "Cálculo I",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles", "Viernes"],
-          "startTime": "14:00",
-          "endTime": "18:00"
-        },
-        {
-          "days": ["Miércoles", "Viernes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [17]
-    },
-    {
-      "id": 23,
-      "name": "Probabilidad y Estadística",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Jueves"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        },
-        {
-          "days": ["Sábado"],
-          "startTime": "08:30",
-          "endTime": "12:30"
-        }
-      ],
-      "prerequisites": [10, 14]
-    },
+        ]
+      },
       {
-      "id": 24,
-      "name": "Estática",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes", "Jueves"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        },
-              {
-          "days": ["Miércoles"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [5, 16]
-    },
-    {
-      "id": 25,
-      "name": "Higiene y Seguridad en el Trabajo II",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Jueves"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Jueves"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [7, 20]
-    },
-    {
-      "id": 26,
-      "name": "Cálculo II",
-      "hours": 128,
-      "scheduleOptions": [
-        {
-          "days": ["Martes", "Viernes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [22]
-    },
-    {
-      "id": 27,
-      "name": "Mecánica Teórica",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        }
-      ],
-      "prerequisites": [22]
-    },
-      {
-      "id": 28,
-      "name": "Electrónica General y de Potencia",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Sábado"],
-          "startTime": "08:30",
-          "endTime": "12:30"
-        }
-      ],
-      "prerequisites": [12, 20]
-    },
-    {
-      "id": 29,
-      "name": "Formulación, Gestión y Evaluación de Proyectos",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [19, 22]
-    },
-    {
-      "id": 30,
-      "name": "Mecánica de los Materiales",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Viernes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [24]
-    },
-    {
-      "id": 31,
-      "name": "Ciencia de los Materiales",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [18, 24]
-    },
-    {
-      "id": 32,
-      "name": "Electrotecnia",
-      "hours": 128,
-      "scheduleOptions": [
+        "schedule": [
           {
-            "days": ["Jueves"],
+            "day": "Lunes",
             "startTime": "18:30",
             "endTime": "22:30"
           },
-           {
-            "days": ["Sábado"],
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": 2,
+    "name": "Intro. a la Ingeniería",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": 3,
+    "name": "Inglés",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": 4,
+    "name": "Taller de Informática General y Aplicada",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": 5,
+    "name": "Medios de Rep. Gráfica II",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      1
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Fundamentos De los Computadores Digitales",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      4
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Higiene y Seguridad en el Trabajo I",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "14:00",
+            "endTime": "16:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "16:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      2
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Intro. a la Gestión del Medio Ambiente",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      2
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Economía I",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "14:00",
+            "endTime": "16:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      2
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Matemática I",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": 11,
+    "name": "Intro. a la Gest. de la Innovación y la Tecnología",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "16:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      2,
+      3,
+      9
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Informática y Programación Industrial",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Sábado",
             "startTime": "08:30",
             "endTime": "12:30"
           }
-      ],
-      "prerequisites": [20, 26]
-    },
-    {
-      "id": 33,
-      "name": "Sistemas y Tecnologías para la Gestión Ambiental",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        }
-      ],
-      "prerequisites": [19, 25]
-    },
+        ]
+      }
+    ],
+    "prerequisites": [
+      6
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Legislación y Ejercicio Profesional",
+    "hours": 64,
+    "scheduleOptions": [
       {
-      "id": 34,
-      "name": "Mecanismos",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [27]
-    },
-    {
-      "id": 35,
-      "name": "Tecnología del Calor",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Sábado"],
-          "startTime": "08:30",
-          "endTime": "12:30"
-        }
-      ],
-      "prerequisites": [21, 26]
-    },
-    {
-      "id": 36,
-      "name": "Tecnología de Fabricación",
-      "hours": 64,
-      "scheduleOptions": [
-         {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [30, 34]
-    },
-    {
-      "id": 37,
-      "name": "Mecánica de los Fluidos",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        },
-        {
-          "days": ["Viernes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [21, 26]
-    },
-    {
-      "id": 38,
-      "name": "Máquinas e Instalaciones Eléctricas",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Jueves"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [32]
-    },
-    {
-      "id": 39,
-      "name": "Modelado y Dinámica de Sistemas Mecánicos",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [30, 26]
-    },
-    {
-      "id": 40,
-      "name": "Automatización Industrial",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [28, 37, 32]
-    },
-    {
-      "id": 41,
-      "name": "Diseño de Componentes de Máquinas",
-      "hours": 96,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Jueves"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [23, 36, 39]
-    },
-    {
-      "id": 42,
-      "name": "Diseño de Sistemas Mecatrónicos",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Viernes"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [28, 36]
-    },
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
       {
-      "id": 43,
-      "name": "Vigilancia Tecnológica e Inteligencia Competitiva",
-      "hours": 32,
-      "scheduleOptions": [
-        {
-          "days": ["Jueves"],
-          "startTime": "18:30",
-          "endTime": "20:30"
-        },
-        {
-          "days": ["Jueves"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [11, 13, 36]
-    },
-    {
-      "id": 44,
-      "name": "Procesamiento de Señales",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [28, 36, 39]
-    },
-    {
-      "id": 45,
-      "name": "Sistemas de Control",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Sábado"],
-          "startTime": "08:30",
-          "endTime": "12:30"
-        }
-      ],
-      "prerequisites": [40]
-    },
-    {
-      "id": 46,
-      "name": "Instrumentación Industrial, Mediciones Mecánicas, Eléctricas y Electrónicas",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Jueves"],
-          "startTime": "20:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [36, 38]
-    },
-    {
-      "id": 47,
-      "name": "Fundamentos de Robótica",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Martes"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [42]
-    },
-    {
-      "id": 48,
-      "name": "Redes de comunicaciones Industriales",
-      "hours": 64,
-      "scheduleOptions": [
-         {
-          "days": ["Miércoles"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [44]
-    },
-    {
-      "id": 49,
-      "name": "Proyecto en Ing. Mecatrónica",
-      "hours": 64,
-      "scheduleOptions": [
-        {
-          "days": ["Lunes", "Jueves"],
-          "startTime": "18:30",
-          "endTime": "22:30"
-        }
-      ],
-      "prerequisites": [28, 40, 41, 42, 43]
-    }
-  ]
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      7
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Gestión de la Calidad",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      9
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Economía II",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      9
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Física I",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      10
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Matemática II",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      10
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Fundamentos de Química",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Sábado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      8
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Organización y Gestión Industrial",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      14,
+      15,
+      5
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Física II",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      16
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Termodinámica",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Sábado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Sábado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      16,
+      18
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Cálculo I",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      17
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Probabilidad y Estadística",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Sábado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      10,
+      14
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Estática",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      5,
+      16
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Higiene y Seguridad en el Trabajo II",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      7,
+      20
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Cálculo II",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      22
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Mecánica Teórica",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      22
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Electrónica General y de Potencia",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Sábado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      12,
+      20
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Formulación, Gestión y Evaluación de Proyectos",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      19,
+      22
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Mecánica de los Materiales",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      24
+    ]
+  },
+  {
+    "id": 31,
+    "name": "Ciencia de los Materiales",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      18,
+      24
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Electrotecnia",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Sábado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      20,
+      26
+    ]
+  },
+  {
+    "id": 33,
+    "name": "Sistemas y Tecnologías para la Gestión Ambiental",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      19,
+      25
+    ]
+  },
+  {
+    "id": 34,
+    "name": "Mecanismos",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      27
+    ]
+  },
+  {
+    "id": 35,
+    "name": "Tecnología del Calor",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Sábado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      21,
+      26
+    ]
+  },
+  {
+    "id": 36,
+    "name": "Tecnología de Fabricación",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      30,
+      34
+    ]
+  },
+  {
+    "id": 37,
+    "name": "Mecánica de los Fluidos",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      21,
+      26
+    ]
+  },
+  {
+    "id": 38,
+    "name": "Máquinas e Instalaciones Eléctricas",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      32
+    ]
+  },
+  {
+    "id": 39,
+    "name": "Modelado y Dinámica de Sistemas Mecánicos",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      30,
+      26
+    ]
+  },
+  {
+    "id": 40,
+    "name": "Automatización Industrial",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      28,
+      37,
+      32
+    ]
+  },
+  {
+    "id": 41,
+    "name": "Diseño de Componentes de Máquinas",
+    "hours": 96,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      23,
+      36,
+      39
+    ]
+  },
+  {
+    "id": 42,
+    "name": "Diseño de Sistemas Mecatrónicos",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      28,
+      36
+    ]
+  },
+  {
+    "id": 43,
+    "name": "Vigilancia Tecnológica e Inteligencia Competitiva",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      11,
+      13,
+      36
+    ]
+  },
+  {
+    "id": 44,
+    "name": "Procesamiento de Señales",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      28,
+      36,
+      39
+    ]
+  },
+  {
+    "id": 45,
+    "name": "Sistemas de Control",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Sábado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      40
+    ]
+  },
+  {
+    "id": 46,
+    "name": "Instrumentación Industrial, Mediciones Mecánicas, Eléctricas y Electrónicas",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      36,
+      38
+    ]
+  },
+  {
+    "id": 47,
+    "name": "Fundamentos de Robótica",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      42
+    ]
+  },
+  {
+    "id": 48,
+    "name": "Redes de comunicaciones Industriales",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miércoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      44
+    ]
+  },
+  {
+    "id": 49,
+    "name": "Proyecto en Ing. Mecatrónica",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      28,
+      40,
+      41,
+      42,
+      43
+    ]
+  }
+]

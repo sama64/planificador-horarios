@@ -1,5 +1,6 @@
 <script>
   import { classData as allClassesStore } from '../stores';
+  import { formatScheduleOption } from '../scheduler';
   
   export let classData;
   export let selected = false;
@@ -8,7 +9,7 @@
   export let showDetails = false;
   
   function formatSchedule(scheduleOption) {
-    return scheduleOption.days.join(', ') + ' ' + scheduleOption.startTime + ' - ' + scheduleOption.endTime;
+    return formatScheduleOption(scheduleOption);
   }
   
   function getPrerequisiteNames(prerequisiteIds) {

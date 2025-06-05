@@ -1,9 +1,9 @@
 <script>
   import { scheduleResults, classData } from '../stores';
+  import { formatScheduleOption } from '../scheduler';
   
   function formatSchedule(scheduleOption) {
-    if (!scheduleOption) return '';
-    return scheduleOption.days.join(', ') + ' ' + scheduleOption.startTime + ' - ' + scheduleOption.endTime;
+    return formatScheduleOption(scheduleOption);
   }
   
   function getPrerequisiteNames(prerequisiteIds) {
