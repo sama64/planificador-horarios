@@ -22,6 +22,76 @@
     return prereqNames.join(', ');
   }
   
+  // Function to sort classes by day of week and time
+  function sortClassesBySchedule(classes) {
+    const dayOrder = {
+      'Lunes': 1,
+      'Martes': 2,
+      'Miércoles': 3,
+      'Jueves': 4,
+      'Viernes': 5,
+      'Sábado': 6,
+      'Domingo': 7
+    };
+    
+    function convertTimeToMinutes(timeStr) {
+      if (!timeStr) return 0;
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      return hours * 60 + minutes;
+    }
+    
+    function normalizeScheduleOption(scheduleOption) {
+      // Handle both simple and detailed formats
+      if (scheduleOption.schedule && Array.isArray(scheduleOption.schedule)) {
+        return scheduleOption.schedule;
+      }
+      
+      if (scheduleOption.days && scheduleOption.startTime && scheduleOption.endTime) {
+        return scheduleOption.days.map(day => ({
+          day,
+          startTime: scheduleOption.startTime,
+          endTime: scheduleOption.endTime
+        }));
+      }
+      
+      return [];
+    }
+    
+    function getEarliestDayAndTime(scheduleOption) {
+      const normalized = normalizeScheduleOption(scheduleOption);
+      if (normalized.length === 0) return { day: 8, time: 9999 }; // Fallback
+      
+      // Find the earliest day and time combination
+      let earliestDay = 8;
+      let earliestTime = 9999;
+      
+      normalized.forEach(slot => {
+        const dayNum = dayOrder[slot.day] || 8;
+        const timeNum = convertTimeToMinutes(slot.startTime);
+        
+        if (dayNum < earliestDay || (dayNum === earliestDay && timeNum < earliestTime)) {
+          earliestDay = dayNum;
+          earliestTime = timeNum;
+        }
+      });
+      
+      return { day: earliestDay, time: earliestTime };
+    }
+    
+    return [...classes].sort((a, b) => {
+      const scheduleA = getEarliestDayAndTime(a.scheduleOption);
+      const scheduleB = getEarliestDayAndTime(b.scheduleOption);
+      
+      // First sort by day
+      if (scheduleA.day !== scheduleB.day) {
+        return scheduleA.day - scheduleB.day;
+      }
+      
+      // Then sort by time
+      return scheduleA.time - scheduleB.time;
+    });
+  }
+  
   // Track how long calculation has been running
   let calculationStartTime = null;
   let calculationDuration = 0;
@@ -98,7 +168,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {#each classes as classInfo}
+                  {#each sortClassesBySchedule(classes) as classInfo}
                     <tr>
                       <td>{classInfo.class.name}</td>
                       <td>{formatSchedule(classInfo.scheduleOption)}</td>
