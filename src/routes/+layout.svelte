@@ -26,8 +26,13 @@
 	</div>
 	
 	<footer class="footer footer-center p-4 bg-base-300 text-base-content">
-		<div>
-			<p>Hecho por <a href="https://www.linkedin.com/in/lisandro-faure-845221216/" target="_blank">Lisandro Faure</a> & <a href="https://www.linkedin.com/in/santiago-amaya-37b0411a7/" target="_blank">Santiago Amaya</a></p>
+		<div class="w-full">
+			<p class="text-sm md:text-base text-center break-words">
+				Hecho por 
+				<a href="https://www.linkedin.com/in/lisandro-faure-845221216/" target="_blank" class="link link-hover">Lisandro Faure</a> 
+				<span class="hidden sm:inline">&</span><span class="sm:hidden"><br /></span>
+				<a href="https://www.linkedin.com/in/santiago-amaya-37b0411a7/" target="_blank" class="link link-hover">Santiago Amaya</a>
+			</p>
 		</div>
 	</footer>
 </div>

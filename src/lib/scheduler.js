@@ -445,25 +445,14 @@ export async function scheduleClasses(classes, userPreferences = {}) {
   
   console.log('Theoretical minimum semesters:', Math.max(...Array.from(eps.values())));
   
-  // Try backtracking approach first (with timeout)
+  // Use backtracking approach (fast enough to not need timeout)
   const bestSolution = { maxSemester: 0, assignments: new Map() };
-  const startTime = Date.now();
-  const timeout = Math.min(userPreferences.timeout || 30000, 30000); // Max 30 seconds for fast response
   
   try {
-    // Run backtracking with timeout
-    const backtrackingPromise = new Promise((resolve) => {
-      const success = solveWithBacktracking(filteredClasses, graph, eps, userPreferences, bestSolution);
-      resolve(success);
-    });
+    // Run backtracking
+    const success = solveWithBacktracking(filteredClasses, graph, eps, userPreferences, bestSolution);
     
-    const timeoutPromise = new Promise((resolve) => {
-      setTimeout(() => resolve(false), timeout);
-    });
-    
-    const success = await Promise.race([backtrackingPromise, timeoutPromise]);
-    
-    // If backtracking didn't complete or find solution, fall back to greedy
+    // If backtracking didn't find solution, fall back to greedy
     if (!success || bestSolution.assignments.size === 0) {
       console.log('Backtracking incomplete, using greedy fallback...');
       const greedyState = solveGreedy(filteredClasses, graph, eps);

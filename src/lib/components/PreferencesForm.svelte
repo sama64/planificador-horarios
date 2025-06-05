@@ -9,14 +9,6 @@
     { value: 'evening', label: 'Noche (después de 18:00)' }
   ];
   
-  // Timeout options in milliseconds
-  const minTimeout = 30000; // 30 seconds
-  const maxTimeout = 600000; // 10 minutes
-  const step = 30000; // 30 seconds
-  
-  // Convert milliseconds to seconds for display
-  $: timeoutInSeconds = $userPreferences.timeout / 1000;
-  
   function toggleDay(day) {
     $userPreferences.noDays = $userPreferences.noDays.includes(day)
       ? $userPreferences.noDays.filter(d => d !== day)
@@ -25,11 +17,6 @@
   
   function setTimePreference(value) {
     $userPreferences.timePreference = value === 'null' ? null : value;
-  }
-  
-  function updateTimeout(event) {
-    const value = parseInt(event.target.value);
-    $userPreferences.timeout = value;
   }
 </script>
 
@@ -64,28 +51,5 @@
         <option value={pref.value}>{pref.label}</option>
       {/each}
     </select>
-  </div>
-  
-  <div class="mb-4">
-    <h3 class="font-medium mb-2">Tiempo máximo de cálculo</h3>
-    <div class="flex flex-col gap-2">
-      <input 
-        type="range" 
-        min={minTimeout} 
-        max={maxTimeout} 
-        step={step} 
-        class="range range-primary" 
-        value={$userPreferences.timeout}
-        on:input={updateTimeout}
-      />
-      <div class="flex justify-between text-xs">
-        <span>30s</span>
-        <span>{timeoutInSeconds} segundos</span>
-        <span>10m</span>
-      </div>
-      <div class="text-sm text-base-content/70 mt-1">
-        Un tiempo mayor puede producir mejores horarios pero tomará más tiempo en calcular.
-      </div>
-    </div>
   </div>
 </div> 
