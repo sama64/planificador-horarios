@@ -9,7 +9,8 @@
       curriculums: [
         { id: 'mecatronica', name: 'Ingeniería en Mecatrónica' },
         { id: 'industrial', name: 'Ingeniería Industrial' },
-        { id: 'mecanica', name: 'Ingeniería Mecánica' }
+        { id: 'mecanica', name: 'Ingeniería Mecánica' },
+        { id: 'ferroviaria', name: 'Ingeniería Ferroviaria' }
       ]
     }
   ];
