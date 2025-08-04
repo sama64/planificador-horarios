@@ -20,6 +20,7 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
+		"@vercel/analytics": "^1.5.0",
 		"glpk.js": "^4.0.2"
 	}
 }

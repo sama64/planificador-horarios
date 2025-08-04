@@ -2,6 +2,10 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { selectionComplete } from '$lib/stores';
+	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+	
+	// Inject Vercel Analytics
+	injectAnalytics();
 	
 	// Ya no cargamos los datos de clases aquí, esto se hace después de que el usuario seleccione facultad y carrera
 </script>
