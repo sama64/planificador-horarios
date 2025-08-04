@@ -139,9 +139,10 @@ function buildDependencyGraph(classes) {
 /**
  * Calculate earliest possible semester for each class based on prerequisites
  */
-function calculateEarliestSemesters(graph, classes) {
+function calculateEarliestSemesters(graph, classes, userPreferences) {
   console.log('Calculating earliest possible semesters...');
   const eps = new Map(); // earliest possible semester
+  const passedClasses = userPreferences.passedClasses || [];
   
   function calculateEPS(classId) {
     if (eps.has(classId)) {
@@ -155,8 +156,22 @@ function calculateEarliestSemesters(graph, classes) {
     }
     
     let maxPrereqSemester = 0;
-    for (const prereqId of node.dependencies) {
-      maxPrereqSemester = Math.max(maxPrereqSemester, calculateEPS(prereqId));
+    
+    // Check all original prerequisites (from the class definition, not just the graph)
+    const cls = node.class;
+    for (const prereqId of cls.prerequisites) {
+      if (passedClasses.includes(prereqId)) {
+        // Prerequisite is already passed - treat as semester 0 (completed)
+        continue;
+      } else if (graph.has(prereqId)) {
+        // Prerequisite is in active classes - calculate its EPS
+        maxPrereqSemester = Math.max(maxPrereqSemester, calculateEPS(prereqId));
+      } else {
+        // Prerequisite is neither passed nor in active classes - this shouldn't happen
+        console.warn(`Prerequisite ${prereqId} for class ${cls.name} is neither passed nor active`);
+        // Treat as if it needs to be taken first
+        maxPrereqSemester = Math.max(maxPrereqSemester, 1);
+      }
     }
     
     const result = maxPrereqSemester + 1;
@@ -391,6 +406,66 @@ function solveGreedy(classes, graph, eps) {
 }
 
 /**
+ * Validate that a schedule doesn't violate dependency constraints
+ */
+function validateSchedule(schedule, allClasses, userPreferences) {
+  if (!schedule.success) {
+    return { valid: true, violations: [] }; // If scheduling failed, validation is not applicable
+  }
+  
+  const violations = [];
+  const classMap = new Map(allClasses.map(cls => [cls.id, cls]));
+  const passedClasses = userPreferences.passedClasses || [];
+  
+  // Check each scheduled class
+  for (const [classId, assignment] of Object.entries(schedule.schedule)) {
+    const cls = classMap.get(parseInt(classId));
+    if (!cls) continue;
+    
+    const classSemester = assignment.semester;
+    
+    // Check that all prerequisites are satisfied
+    for (const prereqId of cls.prerequisites) {
+      if (passedClasses.includes(prereqId)) {
+        // Prerequisite is already passed - OK
+        continue;
+      }
+      
+      const prereqAssignment = schedule.schedule[prereqId];
+      if (prereqAssignment) {
+        // Prerequisite is also scheduled - check it's in an earlier semester
+        if (prereqAssignment.semester >= classSemester) {
+          violations.push({
+            type: 'PREREQUISITE_VIOLATION',
+            class: cls.name,
+            classId: cls.id,
+            classSemester,
+            prerequisite: classMap.get(prereqId)?.name,
+            prerequisiteId: prereqId,
+            prerequisiteSemester: prereqAssignment.semester
+          });
+        }
+      } else {
+        // Prerequisite is neither passed nor scheduled - violation
+        violations.push({
+          type: 'MISSING_PREREQUISITE',
+          class: cls.name,
+          classId: cls.id,
+          classSemester,
+          prerequisite: classMap.get(prereqId)?.name,
+          prerequisiteId: prereqId
+        });
+      }
+    }
+  }
+  
+  return {
+    valid: violations.length === 0,
+    violations
+  };
+}
+
+/**
  * Main scheduling function - much faster than ILP approach
  */
 export async function scheduleClasses(classes, userPreferences = {}) {
@@ -441,7 +516,7 @@ export async function scheduleClasses(classes, userPreferences = {}) {
   
   // Build dependency graph and calculate earliest semesters
   const graph = buildDependencyGraph(filteredClasses);
-  const eps = calculateEarliestSemesters(graph, filteredClasses);
+  const eps = calculateEarliestSemesters(graph, filteredClasses, userPreferences);
   
   console.log('Theoretical minimum semesters:', Math.max(...Array.from(eps.values())));
   
@@ -498,10 +573,22 @@ export async function scheduleClasses(classes, userPreferences = {}) {
   
   console.log(`Solution found: ${bestSolution.maxSemester} semesters, ${filteredClasses.length} classes scheduled`);
   
-        return {
-          success: true,
-          schedule,
-          scheduleByPeriod,
+  // Validate the schedule for dependency violations
+  const result = {
+    success: true,
+    schedule,
+    scheduleByPeriod,
     totalPeriods: bestSolution.maxSemester
   };
+  
+  const validation = validateSchedule(result, classes, userPreferences);
+  if (!validation.valid) {
+    console.error('Schedule validation failed:', validation.violations);
+    return {
+      success: false,
+      error: `Violación de dependencias detectada: ${validation.violations.map(v => `${v.class} requiere ${v.prerequisite}`).join(', ')}`
+    };
+  }
+  
+  return result;
 }

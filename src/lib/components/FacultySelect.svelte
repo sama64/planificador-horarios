@@ -7,7 +7,9 @@
       id: 'unlz',
       name: 'UNLZ - Facultad de Ingeniería',
       curriculums: [
-        { id: 'mecatronica', name: 'Ingeniería en Mecatrónica' }
+        { id: 'mecatronica', name: 'Ingeniería en Mecatrónica' },
+        { id: 'industrial', name: 'Ingeniería Industrial' },
+        { id: 'mecanica', name: 'Ingeniería Mecánica' }
       ]
     }
   ];

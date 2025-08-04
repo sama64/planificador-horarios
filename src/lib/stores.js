@@ -13,7 +13,7 @@ export const classData = writable([]);
 export const userPreferences = writable({
   noDays: [], // Days to avoid: "Lunes", "Martes", etc.
   timePreference: null, // "morning", "afternoon", "evening"
-  maxClassesPerPeriod: null, // Maximum number of classes per period
+  maxClassesPerPeriod: 6, // Maximum number of classes per period
   passedClasses: [], // IDs of classes already passed
 });
 
