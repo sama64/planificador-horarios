@@ -218,6 +218,18 @@ button.warn:hover {
   background: #fff2df;
 }
 
+button.button-accent {
+  border-color: #8ea8f2;
+  background: linear-gradient(180deg, #f4f7ff 0%, #edf2ff 100%);
+  color: #2143b3;
+  box-shadow: 0 8px 18px rgba(46, 82, 211, 0.16);
+}
+
+button.button-accent:hover {
+  border-color: #7393ec;
+  background: linear-gradient(180deg, #eff4ff 0%, #e8eeff 100%);
+}
+
 button.danger {
   border-color: #f3b1c0;
   background: #fff4f7;
@@ -641,6 +653,19 @@ button:focus-visible {
   gap: 0.26rem;
 }
 
+.plan-source-actions {
+  margin-top: 0.2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.catalog-open-button,
+.plan-import-button {
+  width: 100%;
+  min-height: 2.75rem;
+}
+
 .catalog-modal-overlay {
   position: fixed;
   inset: 0;
@@ -822,6 +847,10 @@ button:focus-visible {
 }
 
 @media (max-width: 640px) {
+  .plan-source-actions {
+    grid-template-columns: 1fr;
+  }
+
   .studio-primary-actions {
     align-items: stretch;
   }

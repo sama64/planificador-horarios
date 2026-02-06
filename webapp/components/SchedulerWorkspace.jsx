@@ -97,6 +97,28 @@ function formatUpdatedDate(value) {
   }).format(parsed);
 }
 
+function ActionIcon({ name }) {
+  if (name === 'search') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0-2a8 8 0 1 0 4.9 14.3l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0 0 10 2z" fill="currentColor" /></svg>;
+  }
+  if (name === 'import') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l4 4h-3v6h-2V7H8l4-4zm-7 12h14v6H5v-6z" fill="currentColor" /></svg>;
+  }
+  if (name === 'back') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.8l4.6-4.6L11 5l-7 7 7 7 1.4-1.4L7.8 13H20v-2z" fill="currentColor" /></svg>;
+  }
+  if (name === 'text') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z" fill="currentColor" /></svg>;
+  }
+  if (name === 'spark') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.1 5.4L20 10l-5.9 2.6L12 18l-2.1-5.4L4 10l5.9-2.6L12 2zm7 13l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15zM5 15l.9 2.1L8 18l-2.1.9L5 21l-.9-2.1L2 18l2.1-.9L5 15z" fill="currentColor" /></svg>;
+  }
+  if (name === 'settings') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.8 7.8 0 0 0 .1-2l2-1.5-2-3.4-2.3.9a7.5 7.5 0 0 0-1.7-1l-.3-2.4h-4l-.3 2.4c-.6.2-1.2.6-1.7 1l-2.3-.9-2 3.4 2 1.5a7.8 7.8 0 0 0 .1 2l-2 1.5 2 3.4 2.3-.9c.5.4 1.1.8 1.7 1l.3 2.4h4l.3-2.4c.6-.2 1.2-.6 1.7-1l2.3.9 2-3.4-2-1.5zM12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" fill="currentColor" /></svg>;
+  }
+  return null;
+}
+
 export default function SchedulerWorkspace() {
   const pathname = usePathname();
   const [catalog, setCatalog] = useState([]);
@@ -421,22 +443,24 @@ export default function SchedulerWorkspace() {
             <p>Selecciona tu carrera para empezar.</p>
             <div style={{ marginTop: '0.75rem' }}>
               <label>Catalogo de planes</label>
-              <button
-                type="button"
-                className="ghost"
-                onClick={() => setCatalogModalOpen(true)}
-                disabled={catalog.length === 0}
-              >
-                Ver planes
-              </button>
-            </div>
-
-            <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <button className="ghost" type="button" onClick={() => setShowCustomImport((prev) => !prev)}>
-                {showCustomImport ? 'Ocultar importacion avanzada' : 'Importar plan de estudio personalizado'}
-              </button>
+              <div className="plan-source-actions">
+                <button
+                  type="button"
+                  className="button-accent button-with-icon catalog-open-button"
+                  onClick={() => setCatalogModalOpen(true)}
+                  disabled={catalog.length === 0}
+                >
+                  <ActionIcon name="search" />
+                  Ver planes
+                </button>
+                <button className="ghost button-with-icon plan-import-button" type="button" onClick={() => setShowCustomImport((prev) => !prev)}>
+                  <ActionIcon name="import" />
+                  {showCustomImport ? 'Ocultar importacion avanzada' : 'Importar'}
+                </button>
+              </div>
               {activeSource === 'custom' && (
-                <button className="warn" type="button" onClick={restoreCatalogCurriculum}>
+                <button className="warn button-with-icon" style={{ marginTop: '0.5rem' }} type="button" onClick={restoreCatalogCurriculum}>
+                  <ActionIcon name="back" />
                   Volver al catalogo
                 </button>
               )}
@@ -463,7 +487,10 @@ export default function SchedulerWorkspace() {
                   </div>
                   <div>
                     <label>Importar desde texto</label>
-                    <button className="ghost" onClick={handleImportText} type="button">Usar JSON pegado</button>
+                    <button className="ghost button-with-icon" onClick={handleImportText} type="button">
+                      <ActionIcon name="text" />
+                      Usar JSON pegado
+                    </button>
                   </div>
                 </div>
                 <div style={{ marginTop: '0.65rem' }}>
@@ -523,11 +550,12 @@ export default function SchedulerWorkspace() {
             <p>Si no configuras nada, el plan igual se optimiza por menor cantidad de cuatrimestes.</p>
 
             <div className="action-row" style={{ marginTop: '0.85rem' }}>
-              <button className="primary" onClick={solveSchedule} disabled={loading || !curriculum} type="button">
+              <button className="primary button-with-icon" onClick={solveSchedule} disabled={loading || !curriculum} type="button">
+                <ActionIcon name="spark" />
                 {loading ? 'Optimizando...' : 'Generar plan optimizado'}
               </button>
               <button
-                className="link-button"
+                className="link-button button-with-icon"
                 type="button"
                 onClick={() =>
                   setShowOptionalPreferences((prev) => {
@@ -539,6 +567,7 @@ export default function SchedulerWorkspace() {
                   })
                 }
               >
+                <ActionIcon name="settings" />
                 {showOptionalPreferences ? 'Ocultar preferencias' : activePreferenceCount > 0 ? 'Editar preferencias' : 'Configurar preferencias'}
               </button>
             </div>
