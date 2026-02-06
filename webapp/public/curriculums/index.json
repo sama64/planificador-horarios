@@ -1,0 +1,8 @@
+[
+  { "id": "mecatronica-2025C2", "name": "Ingenieria Mecatronica 2025 C2", "file": "/curriculums/mecatronica-2025C2.json" },
+  { "id": "mecatronica-2025C1", "name": "Ingenieria Mecatronica 2025 C1", "file": "/curriculums/mecatronica-2025C1.json" },
+  { "id": "mecanica-2025C2", "name": "Ingenieria Mecanica 2025 C2", "file": "/curriculums/mecanica-2025C2.json" },
+  { "id": "industrial-2025C2", "name": "Ingenieria Industrial 2025 C2", "file": "/curriculums/industrial-2025C2.json" },
+  { "id": "industrial-2025C1", "name": "Ingenieria Industrial 2025 C1", "file": "/curriculums/industrial-2025C1.json" },
+  { "id": "ferroviaria-2025C2", "name": "Ingenieria Ferroviaria 2025 C2", "file": "/curriculums/ferroviaria-2025C2.json" }
+]

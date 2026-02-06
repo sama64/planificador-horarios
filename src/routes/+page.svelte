@@ -29,6 +29,7 @@
         'mecatronica': 'Ingeniería en Mecatrónica',
         'industrial': 'Ingeniería Industrial',
         'mecanica': 'Ingeniería Mecánica',
+        'ferroviaria': 'Ingeniería Ferroviaria'
       }
     };
     
