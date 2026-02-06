@@ -436,8 +436,8 @@ export default function SchedulerWorkspace() {
         </div>
       </header>
 
-      <main className="grid">
-        <section className="stack">
+      <main className="planner-layout">
+        <section className="planner-steps">
           <article className="surface panel">
             <h2>1. Plan de estudio</h2>
             <p>Selecciona tu carrera para empezar.</p>
@@ -751,15 +751,21 @@ export default function SchedulerWorkspace() {
           </article>
         </section>
 
-        <section className="surface panel">
+        <section className="surface panel planner-result">
           <h2>Plan generado</h2>
 
           {status && (result || loading) && <div className="notice ok">{status}</div>}
           {error && <div className="notice error">{error}</div>}
 
           {!result && !loading && !error && (
-            <div className="notice warn" style={{ marginTop: '0.85rem' }}>
-              Todavia no generaste un plan. Completa materias regulares y presiona "Generar plan optimizado".
+            <div className="result-empty-state" style={{ marginTop: '0.85rem' }}>
+              <strong>Listo para generar tu plan</strong>
+              <p>Completa estos pasos y presiona "Generar plan optimizado".</p>
+              <ol>
+                <li>Carga o importa un plan de estudio</li>
+                <li>Marca tus materias regulares</li>
+                <li>Configura preferencias (opcional)</li>
+              </ol>
             </div>
           )}
 

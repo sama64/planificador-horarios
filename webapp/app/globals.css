@@ -135,6 +135,52 @@ body {
   }
 }
 
+.planner-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.planner-steps {
+  display: grid;
+  gap: 1rem;
+}
+
+.planner-result {
+  min-height: 320px;
+}
+
+.result-empty-state {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+  padding: 0.92rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.result-empty-state p {
+  margin: 0;
+}
+
+.result-empty-state ol {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #4f5d77;
+  display: grid;
+  gap: 0.16rem;
+}
+
+@media (min-width: 1200px) {
+  .planner-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .planner-result {
+    min-height: 420px;
+  }
+}
+
 .stack {
   display: flex;
   flex-direction: column;
