@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import CatalogPickerModal from '@/components/CatalogPickerModal.jsx';
+import { parseCatalogPayload } from '@/lib/catalog-format.js';
 import { DAY_OPTIONS, DEFAULT_CONSTRAINTS, TIME_PREFERENCE_OPTIONS } from '@/lib/defaults.js';
 import { parseCurriculumPayload, serializeCurriculumEnvelope } from '@/lib/curriculum-format.js';
 
@@ -80,9 +82,26 @@ function pickColorIndexWithSeparation(baseIndex, recentIndexes, paletteLength, m
   return baseIndex;
 }
 
+function formatUpdatedDate(value) {
+  if (!value) {
+    return 'Sin fecha';
+  }
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat('es-AR', {
+    dateStyle: 'medium'
+  }).format(parsed);
+}
+
 export default function SchedulerWorkspace() {
   const pathname = usePathname();
   const [catalog, setCatalog] = useState([]);
+  const [catalogUniversities, setCatalogUniversities] = useState([]);
+  const [catalogFaculties, setCatalogFaculties] = useState([]);
   const [selectedCatalogId, setSelectedCatalogId] = useState('');
   const [curriculum, setCurriculum] = useState(null);
   const [importText, setImportText] = useState('');
@@ -96,6 +115,7 @@ export default function SchedulerWorkspace() {
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const [activeSource, setActiveSource] = useState('catalog');
+  const [catalogModalOpen, setCatalogModalOpen] = useState(false);
   const [showCustomImport, setShowCustomImport] = useState(false);
   const [showOptionalPreferences, setShowOptionalPreferences] = useState(false);
   const [showAdvancedPreferences, setShowAdvancedPreferences] = useState(false);
@@ -104,12 +124,15 @@ export default function SchedulerWorkspace() {
     async function boot() {
       try {
         const response = await fetch('/curriculums/index.json');
-        const data = await response.json();
-        setCatalog(Array.isArray(data) ? data : []);
+        const payload = await response.json();
+        const parsedCatalog = parseCatalogPayload(payload);
+        setCatalog(parsedCatalog.plans);
+        setCatalogUniversities(parsedCatalog.universities);
+        setCatalogFaculties(parsedCatalog.faculties);
 
-        if (Array.isArray(data) && data.length > 0) {
-          await loadBuiltInCurriculum(data[0]);
-          setSelectedCatalogId(data[0].id);
+        if (parsedCatalog.plans.length > 0) {
+          await loadBuiltInCurriculum(parsedCatalog.plans[0]);
+          setSelectedCatalogId(parsedCatalog.plans[0].id);
         }
 
         const localDraft = localStorage.getItem('schedule.curriculumDraft');
@@ -132,6 +155,10 @@ export default function SchedulerWorkspace() {
   }, []);
 
   const classes = curriculum?.classes || [];
+  const selectedCatalogPlan = useMemo(
+    () => catalog.find((entry) => entry.id === selectedCatalogId) || null,
+    [catalog, selectedCatalogId]
+  );
 
   const filteredClasses = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -157,7 +184,9 @@ export default function SchedulerWorkspace() {
         metadata: {
           id: item.id,
           name: item.name,
-          institution: 'UNLaM'
+          institution: [item.university?.shortName || item.university?.name, item.faculty?.shortName || item.faculty?.name]
+            .filter(Boolean)
+            .join(' · ') || 'Universidad'
         },
         classes: data
       });
@@ -173,13 +202,9 @@ export default function SchedulerWorkspace() {
     }
   }
 
-  function handleCatalogChange(event) {
-    const nextId = event.target.value;
-    setSelectedCatalogId(nextId);
-    const item = catalog.find((entry) => entry.id === nextId);
-    if (item) {
-      loadBuiltInCurriculum(item);
-    }
+  function handleSelectCatalogPlan(item) {
+    loadBuiltInCurriculum(item);
+    setCatalogModalOpen(false);
   }
 
   function handleImportText() {
@@ -396,12 +421,14 @@ export default function SchedulerWorkspace() {
             <p>Selecciona tu carrera para empezar.</p>
             <div style={{ marginTop: '0.75rem' }}>
               <label>Catalogo de planes</label>
-              <select className="select" value={selectedCatalogId} onChange={handleCatalogChange}>
-                <option value="">Seleccionar...</option>
-                {catalog.map((item) => (
-                  <option key={item.id} value={item.id}>{item.name}</option>
-                ))}
-              </select>
+              <button
+                type="button"
+                className="ghost"
+                onClick={() => setCatalogModalOpen(true)}
+                disabled={catalog.length === 0}
+              >
+                Ver planes
+              </button>
             </div>
 
             <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -414,6 +441,15 @@ export default function SchedulerWorkspace() {
                 </button>
               )}
             </div>
+
+            {selectedCatalogPlan && activeSource === 'catalog' && (
+              <div className="catalog-selection-summary">
+                <strong>{selectedCatalogPlan.name}</strong>
+                <div className="mono">{selectedCatalogPlan.university?.name || 'Universidad no especificada'}</div>
+                <div className="mono">{selectedCatalogPlan.faculty?.name || 'Facultad no especificada'}</div>
+                <div className="compact-meta">Ultima actualizacion: {formatUpdatedDate(selectedCatalogPlan.lastUpdated)}</div>
+              </div>
+            )}
 
             {showCustomImport && (
               <div className="notice warn" style={{ marginTop: '0.75rem' }}>
@@ -744,6 +780,16 @@ export default function SchedulerWorkspace() {
           )}
         </section>
       </main>
+
+      <CatalogPickerModal
+        open={catalogModalOpen}
+        plans={catalog}
+        universities={catalogUniversities}
+        faculties={catalogFaculties}
+        selectedPlanId={selectedCatalogId}
+        onClose={() => setCatalogModalOpen(false)}
+        onSelectPlan={handleSelectCatalogPlan}
+      />
     </div>
   );
 }

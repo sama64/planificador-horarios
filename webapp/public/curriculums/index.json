@@ -1,8 +1,68 @@
-[
-  { "id": "mecatronica-2025C2", "name": "Ingenieria Mecatronica 2025 C2", "file": "/curriculums/mecatronica-2025C2.json" },
-  { "id": "mecatronica-2025C1", "name": "Ingenieria Mecatronica 2025 C1", "file": "/curriculums/mecatronica-2025C1.json" },
-  { "id": "mecanica-2025C2", "name": "Ingenieria Mecanica 2025 C2", "file": "/curriculums/mecanica-2025C2.json" },
-  { "id": "industrial-2025C2", "name": "Ingenieria Industrial 2025 C2", "file": "/curriculums/industrial-2025C2.json" },
-  { "id": "industrial-2025C1", "name": "Ingenieria Industrial 2025 C1", "file": "/curriculums/industrial-2025C1.json" },
-  { "id": "ferroviaria-2025C2", "name": "Ingenieria Ferroviaria 2025 C2", "file": "/curriculums/ferroviaria-2025C2.json" }
-]
+{
+  "formatVersion": "schedule-catalog-v2",
+  "universities": [
+    {
+      "id": "unlz",
+      "name": "Universidad Nacional de Lomas de Zamora",
+      "shortName": "UNLZ",
+      "logoUrl": "https://i.imgur.com/8uyBHdE.jpeg",
+      "logoText": "UNL"
+    }
+  ],
+  "faculties": [
+    {
+      "id": "fing-unlz",
+      "universityId": "unlz",
+      "name": "Facultad de Ingenieria",
+      "shortName": "Ingenieria",
+      "logoText": "ING"
+    }
+  ],
+  "plans": [
+    {
+      "id": "mecatronica-2025C2",
+      "name": "Ingenieria Mecatronica 2025 C2",
+      "career": "Ingenieria Mecatronica",
+      "file": "/curriculums/mecatronica-2025C2.json",
+      "universityId": "unlz",
+      "facultyId": "fing-unlz",
+      "lastUpdated": "2026-01-18"
+    },
+    {
+      "id": "mecanica-2025C2",
+      "name": "Ingenieria Mecanica 2025 C2",
+      "career": "Ingenieria Mecanica",
+      "file": "/curriculums/mecanica-2025C2.json",
+      "universityId": "unlz",
+      "facultyId": "fing-unlz",
+      "lastUpdated": "2026-01-18"
+    },
+    {
+      "id": "industrial-2025C2",
+      "name": "Ingenieria Industrial 2025 C2",
+      "career": "Ingenieria Industrial",
+      "file": "/curriculums/industrial-2025C2.json",
+      "universityId": "unlz",
+      "facultyId": "fing-unlz",
+      "lastUpdated": "2026-01-18"
+    },
+    {
+      "id": "industrial-2025C1",
+      "name": "Ingenieria Industrial 2025 C1",
+      "career": "Ingenieria Industrial",
+      "file": "/curriculums/industrial-2025C1.json",
+      "universityId": "unlz",
+      "facultyId": "fing-unlz",
+      "lastUpdated": "2025-08-12"
+    },
+    {
+      "id": "ferroviaria-2025C2",
+      "name": "Ingenieria Ferroviaria 2025 C2",
+      "career": "Ingenieria Ferroviaria",
+      "file": "/curriculums/ferroviaria-2025C2.json",
+      "universityId": "unlz",
+      "facultyId": "fing-unlz",
+      "lastUpdated": "2026-01-18"
+    }
+  ]
+}
