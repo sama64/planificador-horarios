@@ -145,6 +145,11 @@ body {
   padding: 1rem;
 }
 
+.panel.panel-overflow-visible {
+  overflow: visible;
+  z-index: 20;
+}
+
 .panel h2 {
   margin: 0 0 0.65rem;
   font-size: 1.06rem;
@@ -523,6 +528,109 @@ button:focus-visible {
   font-size: 0.92rem;
 }
 
+.icon-inline {
+  width: 0.98rem;
+  height: 0.98rem;
+  flex: 0 0 auto;
+}
+
+.button-with-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+}
+
+.source-mode-switch {
+  display: inline-flex;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.2rem;
+  background: #f8faff;
+  gap: 0.2rem;
+}
+
+.source-mode-chip {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  color: #4e5f7c;
+  padding: 0.45rem 0.64rem;
+  font-size: 0.84rem;
+}
+
+.source-mode-chip.button-with-icon {
+  justify-content: center;
+}
+
+.source-mode-chip:hover {
+  transform: none;
+  background: #edf2ff;
+  border-color: #cfdaf5;
+}
+
+.source-mode-chip.active {
+  background: #ffffff;
+  border-color: #b9c9ef;
+  color: #2341a9;
+  font-weight: 700;
+}
+
+.studio-primary-actions {
+  margin-top: 0.85rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.actions-menu {
+  position: relative;
+}
+
+.actions-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  border-radius: var(--radius-control);
+  color: var(--text);
+  font-weight: 600;
+  padding: 0.66rem 0.9rem;
+  min-width: 126px;
+  cursor: pointer;
+}
+
+.actions-menu-trigger:hover {
+  background: #f8faff;
+  border-color: #a9b5ca;
+}
+
+.actions-menu-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: #fff;
+  box-shadow: var(--shadow-1);
+  padding: 0.32rem;
+  display: grid;
+  gap: 0.25rem;
+  min-width: 176px;
+  z-index: 16;
+}
+
+.actions-menu-list button {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
+}
+
 .catalog-selection-summary {
   margin-top: 0.75rem;
   border: 1px solid var(--line);
@@ -714,6 +822,25 @@ button:focus-visible {
 }
 
 @media (max-width: 640px) {
+  .studio-primary-actions {
+    align-items: stretch;
+  }
+
+  .studio-primary-actions > button,
+  .actions-menu {
+    width: 100%;
+  }
+
+  .actions-menu-trigger {
+    width: 100%;
+  }
+
+  .actions-menu-list {
+    left: 0;
+    right: 0;
+    min-width: 0;
+  }
+
   .catalog-modal {
     max-height: min(90vh, 800px);
     padding: 0.75rem;

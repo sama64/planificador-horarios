@@ -21,6 +21,35 @@ function normalizeScheduleBlock(block) {
   };
 }
 
+function toSlug(value, fallback = 'plan-estudio') {
+  const slug = String(value || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+  return slug || fallback;
+}
+
+function hash32(text) {
+  let hash = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    hash = (hash * 31 + text.charCodeAt(i)) | 0;
+  }
+  return (hash >>> 0).toString(36);
+}
+
+export function buildAutoCurriculumId(metadata = {}, classes = []) {
+  const baseSlug = toSlug(metadata?.name || '', 'plan-estudio');
+  const signature = classes
+    .map((cls) => `${cls.id}:${cls.name}`)
+    .join('|');
+  const hash = hash32(`${metadata?.institution || ''}|${baseSlug}|${signature}`).padStart(6, '0').slice(0, 6);
+  return `${baseSlug}-${hash}`;
+}
+
 function normalizeScheduleOption(option) {
   if (!option || typeof option !== 'object') {
     return null;
@@ -75,20 +104,26 @@ function normalizeClass(cls) {
 }
 
 export function parseCurriculumPayload(payload) {
+  const defaultMetadata = {
+    id: 'plan-personalizado',
+    name: 'Plan de estudio personalizado',
+    institution: '',
+    degree: '',
+    updatedAt: new Date().toISOString()
+  };
+
   const envelope = {
     formatVersion: FORMAT_VERSION,
     metadata: {
-      id: 'plan-personalizado',
-      name: 'Plan de estudio personalizado',
-      institution: '',
-      degree: '',
-      updatedAt: new Date().toISOString()
+      ...defaultMetadata,
+      id: buildAutoCurriculumId(defaultMetadata, [])
     },
     classes: []
   };
 
   if (Array.isArray(payload)) {
     envelope.classes = payload.map(normalizeClass).filter(Boolean);
+    envelope.metadata.id = buildAutoCurriculumId(envelope.metadata, envelope.classes);
     return envelope;
   }
 
@@ -113,6 +148,7 @@ export function parseCurriculumPayload(payload) {
     updatedAt: typeof metadata.updatedAt === 'string' ? metadata.updatedAt : envelope.metadata.updatedAt
   };
   envelope.classes = sourceClasses.map(normalizeClass).filter(Boolean);
+  envelope.metadata.id = buildAutoCurriculumId(envelope.metadata, envelope.classes);
 
   return envelope;
 }
@@ -124,6 +160,7 @@ export function serializeCurriculumEnvelope(envelope) {
     formatVersion: FORMAT_VERSION,
     metadata: {
       ...parsed.metadata,
+      id: buildAutoCurriculumId(parsed.metadata, parsed.classes),
       updatedAt: new Date().toISOString()
     },
     classes: parsed.classes.map((cls) => ({
@@ -137,14 +174,19 @@ export function serializeCurriculumEnvelope(envelope) {
 }
 
 export function createEmptyCurriculumEnvelope() {
+  const metadata = {
+    id: 'plan-personalizado',
+    name: 'Plan de estudio personalizado',
+    institution: '',
+    degree: '',
+    updatedAt: new Date().toISOString()
+  };
+
   return {
     formatVersion: FORMAT_VERSION,
     metadata: {
-      id: 'plan-personalizado',
-      name: 'Plan de estudio personalizado',
-      institution: '',
-      degree: '',
-      updatedAt: new Date().toISOString()
+      ...metadata,
+      id: buildAutoCurriculumId(metadata, [])
     },
     classes: []
   };

@@ -2,11 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
+import CatalogPickerModal from '@/components/CatalogPickerModal.jsx';
 import { parseCatalogPayload } from '@/lib/catalog-format.js';
 import { DAY_OPTIONS } from '@/lib/defaults.js';
-import { createEmptyCurriculumEnvelope, parseCurriculumPayload, serializeCurriculumEnvelope } from '@/lib/curriculum-format.js';
+import { buildAutoCurriculumId, createEmptyCurriculumEnvelope, parseCurriculumPayload, serializeCurriculumEnvelope } from '@/lib/curriculum-format.js';
 
 const SUBJECT_COLORS = [
   { accent: '#4f46e5', tint: 'rgba(79, 70, 229, 0.08)' },
@@ -55,6 +56,15 @@ function toDownloadFile(content, filename) {
   anchor.download = filename;
   anchor.click();
   URL.revokeObjectURL(url);
+}
+
+function toExportFileName(name) {
+  const safeName = String(name || '')
+    .trim()
+    .replace(/[\\/:*?"<>|]/g, '')
+    .replace(/\s+/g, ' ');
+
+  return `${safeName || 'Plan de estudio'}.json`;
 }
 
 function hashString(value) {
@@ -164,18 +174,57 @@ function classHasSchedule(cls) {
   return (cls.scheduleOptions || []).some((option) => (option.schedule || []).length > 0);
 }
 
+function ActionIcon({ name }) {
+  if (name === 'catalog') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h11a3 3 0 0 1 3 3v13h-2V6a1 1 0 0 0-1-1H6v14h8v2H6a2 2 0 0 1-2-2V5z" fill="currentColor" /></svg>;
+  }
+  if (name === 'json') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5zm0 2.5L16.5 8H14V5.5zM9 12h6v2H9v-2zm0 4h6v2H9v-2z" fill="currentColor" /></svg>;
+  }
+  if (name === 'search') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0-2a8 8 0 1 0 4.9 14.3l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0 0 10 2z" fill="currentColor" /></svg>;
+  }
+  if (name === 'file') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm7 1.5V8h3.5L13 4.5zM8 12h8v2H8v-2z" fill="currentColor" /></svg>;
+  }
+  if (name === 'text') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z" fill="currentColor" /></svg>;
+  }
+  if (name === 'planner') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h7V3H3v9h2V5zm14 14h-7v2h9v-9h-2v7zM8 17l10-10-1.4-1.4-10 10L8 17z" fill="currentColor" /></svg>;
+  }
+  if (name === 'more') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" fill="currentColor" /></svg>;
+  }
+  if (name === 'download') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v8h3l-4 4-4-4h3V4zm-6 13h14v3H5v-3z" fill="currentColor" /></svg>;
+  }
+  if (name === 'plus') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z" fill="currentColor" /></svg>;
+  }
+  return null;
+}
+
 export default function CurriculumStudio() {
+  const router = useRouter();
   const pathname = usePathname();
   const fileInputRef = useRef(null);
+  const actionsMenuRef = useRef(null);
 
   const [catalog, setCatalog] = useState([]);
+  const [catalogUniversities, setCatalogUniversities] = useState([]);
+  const [catalogFaculties, setCatalogFaculties] = useState([]);
   const [selectedCatalogId, setSelectedCatalogId] = useState('');
+  const [catalogModalOpen, setCatalogModalOpen] = useState(false);
   const [envelope, setEnvelope] = useState(createEmptyCurriculumEnvelope());
   const [importText, setImportText] = useState('');
   const [importedFileName, setImportedFileName] = useState('');
-  const [showTextImport, setShowTextImport] = useState(false);
+  const [sourceMode, setSourceMode] = useState('catalog');
+  const [jsonInputMode, setJsonInputMode] = useState('file');
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
+  const [lastExportedFingerprint, setLastExportedFingerprint] = useState(null);
+  const [showActionsMenu, setShowActionsMenu] = useState(false);
 
   const [classSearch, setClassSearch] = useState('');
   const [filterMode, setFilterMode] = useState('all');
@@ -191,6 +240,8 @@ export default function CurriculumStudio() {
         const payload = await response.json();
         const parsedCatalog = parseCatalogPayload(payload);
         setCatalog(parsedCatalog.plans);
+        setCatalogUniversities(parsedCatalog.universities);
+        setCatalogFaculties(parsedCatalog.faculties);
       } catch (loadError) {
         setError(`No se pudo cargar catalogo: ${loadError.message}`);
       }
@@ -198,6 +249,34 @@ export default function CurriculumStudio() {
 
     loadCatalog();
   }, []);
+
+  useEffect(() => {
+    if (!showActionsMenu) {
+      return;
+    }
+
+    function onPointerDown(event) {
+      if (actionsMenuRef.current && !actionsMenuRef.current.contains(event.target)) {
+        setShowActionsMenu(false);
+      }
+    }
+
+    function onEscape(event) {
+      if (event.key === 'Escape') {
+        setShowActionsMenu(false);
+      }
+    }
+
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('touchstart', onPointerDown);
+    window.addEventListener('keydown', onEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('touchstart', onPointerDown);
+      window.removeEventListener('keydown', onEscape);
+    };
+  }, [showActionsMenu]);
 
   const classes = envelope.classes || [];
 
@@ -252,6 +331,16 @@ export default function CurriculumStudio() {
     }));
   }, [classes, classSearch, filterMode, sortMode, cycleClassIds]);
 
+  const autoMetadataId = useMemo(
+    () => buildAutoCurriculumId(envelope.metadata, classes),
+    [envelope.metadata, classes]
+  );
+
+  const selectedCatalogPlan = useMemo(
+    () => catalog.find((entry) => entry.id === selectedCatalogId) || null,
+    [catalog, selectedCatalogId]
+  );
+
   function setErrorSafe(message) {
     setError(message);
     setNotice('');
@@ -272,16 +361,26 @@ export default function CurriculumStudio() {
         metadata: {
           id: item.id,
           name: item.name,
-          institution: 'UNLaM'
+          institution: [item.university?.shortName || item.university?.name, item.faculty?.shortName || item.faculty?.name]
+            .filter(Boolean)
+            .join(' · ') || 'Universidad'
         },
         classes: json
       });
       setEnvelope(parsed);
       setExpandedClassIds(new Set(parsed.classes[0] ? [parsed.classes[0].id] : []));
+      setSelectedCatalogId(item.id);
+      setSourceMode('catalog');
+      setLastExportedFingerprint(null);
       setNotice(`Cargado: ${parsed.metadata.name}`);
     } catch (loadError) {
       setErrorSafe(`Error cargando plan de estudio: ${loadError.message}`);
     }
+  }
+
+  function handleSelectCatalogPlan(item) {
+    loadBuiltIn(item);
+    setCatalogModalOpen(false);
   }
 
   function applyImportedPayload(payload, source) {
@@ -292,6 +391,7 @@ export default function CurriculumStudio() {
 
     setEnvelope(parsed);
     setExpandedClassIds(new Set(parsed.classes[0] ? [parsed.classes[0].id] : []));
+    setLastExportedFingerprint(null);
     clearMessages();
     setNotice(`Importado desde ${source}: ${parsed.metadata.name}`);
   }
@@ -299,6 +399,8 @@ export default function CurriculumStudio() {
   function importFromText() {
     try {
       applyImportedPayload(JSON.parse(importText), 'texto');
+      setSourceMode('json');
+      setJsonInputMode('text');
     } catch (importError) {
       setErrorSafe(`Importacion invalida: ${importError.message}`);
     }
@@ -319,6 +421,8 @@ export default function CurriculumStudio() {
       setImportedFileName(file.name);
       try {
         applyImportedPayload(JSON.parse(reader.result), `archivo ${file.name}`);
+        setSourceMode('json');
+        setJsonInputMode('file');
       } catch (importError) {
         setErrorSafe(`Importacion invalida: ${importError.message}`);
       }
@@ -328,15 +432,45 @@ export default function CurriculumStudio() {
 
   function exportCurriculum() {
     const serialized = serializeCurriculumEnvelope(envelope);
-    const filename = `${serialized.metadata.id || 'plan-de-estudio'}.json`;
+    const filename = toExportFileName(serialized.metadata.name);
     toDownloadFile(JSON.stringify(serialized, null, 2), filename);
+    setLastExportedFingerprint(buildDraftFingerprint(envelope));
+    setShowActionsMenu(false);
     setNotice(`Exportado ${filename}`);
+  }
+
+  function buildDraftFingerprint(curriculumEnvelope) {
+    const normalized = parseCurriculumPayload(curriculumEnvelope);
+    return JSON.stringify({
+      metadata: {
+        id: normalized.metadata.id,
+        name: normalized.metadata.name,
+        institution: normalized.metadata.institution,
+        degree: normalized.metadata.degree
+      },
+      classes: normalized.classes
+    });
   }
 
   function copyForPlanner() {
     const serialized = serializeCurriculumEnvelope(envelope);
+    const currentFingerprint = buildDraftFingerprint(envelope);
+    const wasExportedCurrentVersion = lastExportedFingerprint === currentFingerprint;
+
+    if (!wasExportedCurrentVersion) {
+      const shouldDownload = window.confirm(
+        'Todavia no exportaste esta version del plan. ¿Querés descargar el JSON antes de ir al planificador?'
+      );
+      if (shouldDownload) {
+        const filename = toExportFileName(serialized.metadata.name);
+        toDownloadFile(JSON.stringify(serialized, null, 2), filename);
+        setLastExportedFingerprint(currentFingerprint);
+      }
+    }
+
     localStorage.setItem('schedule.curriculumDraft', JSON.stringify(serialized));
     setNotice('Plan de estudio guardado para abrir en el planificador.');
+    router.push('/');
   }
 
   function updateMetadata(field, value) {
@@ -571,97 +705,170 @@ export default function CurriculumStudio() {
       </header>
 
       <main className="stack">
-        <section className="surface panel">
+        <section className="surface panel panel-overflow-visible">
           <h2>Paso 1. Fuente del plan</h2>
-          <p>Elige una base desde catalogo o importa tu archivo JSON.</p>
+          <p>Elige una via para cargar el plan: catalogo o JSON personalizado.</p>
 
-          <div className="source-grid" style={{ marginTop: '0.8rem' }}>
-            <article className="source-card">
-              <h3>Desde catalogo</h3>
-              <label>Cargar plan de estudio</label>
-              <select
-                className="select"
-                value={selectedCatalogId}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  setSelectedCatalogId(value);
-                  const item = catalog.find((entry) => entry.id === value);
-                  if (item) {
-                    loadBuiltIn(item);
-                  }
-                }}
-              >
-                <option value="">Seleccionar...</option>
-                {catalog.map((item) => (
-                  <option key={item.id} value={item.id}>{item.name}</option>
-                ))}
-              </select>
-            </article>
-
-            <article className="source-card">
-              <h3>Archivo JSON</h3>
-              <p className="helper-text">Arrastra un archivo o abre el selector.</p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="application/json"
-                onChange={importFromFile}
-                style={{ display: 'none' }}
-              />
-              <button className="ghost" type="button" onClick={() => fileInputRef.current?.click()}>
-                Elegir archivo
-              </button>
-              <div
-                className="dropzone"
-                role="button"
-                tabIndex={0}
-                onClick={() => fileInputRef.current?.click()}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    fileInputRef.current?.click();
-                  }
-                }}
-              >
-                Arrastra un .json aqui o toca para abrir archivos
-              </div>
-              {importedFileName && <span className="meta-item">Archivo: {importedFileName}</span>}
-            </article>
-          </div>
-
-          <div className="action-row" style={{ marginTop: '0.85rem' }}>
-            <button className="ghost" onClick={() => setShowTextImport((prev) => !prev)} type="button">
-              {showTextImport ? 'Ocultar importacion por texto' : 'Importar desde texto JSON'}
-            </button>
-            <button className="ghost" onClick={exportCurriculum} type="button">Exportar JSON</button>
-            <button className="primary" onClick={copyForPlanner} type="button">Usar en planificador</button>
+          <div className="source-mode-switch" style={{ marginTop: '0.8rem' }}>
             <button
-              className="ghost"
-              onClick={() => {
-                setEnvelope(createEmptyCurriculumEnvelope());
-                setExpandedClassIds(new Set());
-                setNotice('Editor reiniciado.');
-              }}
               type="button"
+              className={`source-mode-chip ${sourceMode === 'catalog' ? 'active' : ''} button-with-icon`}
+              onClick={() => setSourceMode('catalog')}
             >
-              Nuevo plan
+              <ActionIcon name="catalog" />
+              Usar catalogo
+            </button>
+            <button
+              type="button"
+              className={`source-mode-chip ${sourceMode === 'json' ? 'active' : ''} button-with-icon`}
+              onClick={() => setSourceMode('json')}
+            >
+              <ActionIcon name="json" />
+              Importar JSON
             </button>
           </div>
 
-          {showTextImport && (
-            <div className="soft-panel" style={{ marginTop: '0.75rem' }}>
-              <label>Importar desde texto JSON</label>
-              <textarea
-                className="textarea"
-                value={importText}
-                onChange={(event) => setImportText(event.target.value)}
-                placeholder="Pega un plan de estudio en formato JSON"
-              />
-              <div style={{ marginTop: '0.55rem' }}>
-                <button className="ghost" onClick={importFromText} type="button">Importar texto</button>
-              </div>
-            </div>
+          {sourceMode === 'catalog' && (
+            <article className="source-card" style={{ marginTop: '0.8rem' }}>
+              <h3>Desde catalogo</h3>
+              <button
+                type="button"
+                className="ghost button-with-icon"
+                onClick={() => setCatalogModalOpen(true)}
+                disabled={catalog.length === 0}
+              >
+                <ActionIcon name="search" />
+                Ver planes
+              </button>
+              {selectedCatalogPlan && (
+                <div className="catalog-selection-summary">
+                  <strong>{selectedCatalogPlan.name}</strong>
+                  <div className="mono">{selectedCatalogPlan.university?.name || 'Universidad no especificada'}</div>
+                  <div className="mono">{selectedCatalogPlan.faculty?.name || 'Facultad no especificada'}</div>
+                </div>
+              )}
+            </article>
           )}
+
+          {sourceMode === 'json' && (
+            <article className="source-card" style={{ marginTop: '0.8rem' }}>
+              <h3>Importacion JSON</h3>
+              <div className="source-mode-switch">
+                <button
+                  type="button"
+                  className={`source-mode-chip ${jsonInputMode === 'file' ? 'active' : ''} button-with-icon`}
+                  onClick={() => setJsonInputMode('file')}
+                >
+                  <ActionIcon name="file" />
+                  Desde archivo
+                </button>
+                <button
+                  type="button"
+                  className={`source-mode-chip ${jsonInputMode === 'text' ? 'active' : ''} button-with-icon`}
+                  onClick={() => setJsonInputMode('text')}
+                >
+                  <ActionIcon name="text" />
+                  Pegar texto
+                </button>
+              </div>
+
+              {jsonInputMode === 'file' && (
+                <>
+                  <p className="helper-text">Arrastra un archivo o abre el selector.</p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="application/json"
+                    onChange={importFromFile}
+                    style={{ display: 'none' }}
+                  />
+                  <button className="ghost button-with-icon" type="button" onClick={() => fileInputRef.current?.click()}>
+                    <ActionIcon name="file" />
+                    Elegir archivo
+                  </button>
+                  <div
+                    className="dropzone"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => fileInputRef.current?.click()}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        fileInputRef.current?.click();
+                      }
+                    }}
+                  >
+                    Arrastra un .json aqui o toca para abrir archivos
+                  </div>
+                  {importedFileName && <span className="meta-item">Archivo: {importedFileName}</span>}
+                </>
+              )}
+
+              {jsonInputMode === 'text' && (
+                <div className="soft-panel" style={{ marginTop: '0.45rem' }}>
+                  <label>Importar desde texto JSON</label>
+                  <textarea
+                    className="textarea"
+                    value={importText}
+                    onChange={(event) => setImportText(event.target.value)}
+                    placeholder="Pega un plan de estudio en formato JSON"
+                  />
+                  <div style={{ marginTop: '0.55rem' }}>
+                    <button className="ghost button-with-icon" onClick={importFromText} type="button">
+                      <ActionIcon name="json" />
+                      Importar texto
+                    </button>
+                  </div>
+                </div>
+              )}
+            </article>
+          )}
+
+          <div className="studio-primary-actions">
+            <button className="primary button-with-icon" onClick={copyForPlanner} type="button">
+              <ActionIcon name="planner" />
+              Usar en planificador
+            </button>
+            <div className="actions-menu" ref={actionsMenuRef}>
+              <button
+                className="actions-menu-trigger button-with-icon"
+                type="button"
+                aria-label="Mas acciones"
+                aria-expanded={showActionsMenu}
+                onClick={() => setShowActionsMenu((prev) => !prev)}
+              >
+                <ActionIcon name="more" />
+                Mas acciones
+              </button>
+              {showActionsMenu && (
+                <div className="actions-menu-list">
+                  <button className="ghost button-with-icon" onClick={exportCurriculum} type="button">
+                    <ActionIcon name="download" />
+                    Exportar JSON
+                  </button>
+                <button
+                  className="ghost button-with-icon"
+                  onClick={() => {
+                    setEnvelope(createEmptyCurriculumEnvelope());
+                    setExpandedClassIds(new Set());
+                    setSelectedCatalogId('');
+                    setImportText('');
+                    setImportedFileName('');
+                    setSourceMode('catalog');
+                    setJsonInputMode('file');
+                    setLastExportedFingerprint(null);
+                    setShowActionsMenu(false);
+                    setNotice('Editor reiniciado.');
+                  }}
+                  type="button"
+                >
+                  <ActionIcon name="plus" />
+                  Nuevo plan
+                </button>
+              </div>
+              )}
+            </div>
+          </div>
 
           {notice && <div className="notice ok">{notice}</div>}
           {error && <div className="notice error">{error}</div>}
@@ -670,17 +877,9 @@ export default function CurriculumStudio() {
         <section className="surface panel">
           <h2>Paso 2. Metadata</h2>
           <p className="helper-text">
-            ID recomendado: usa minusculas y guiones. Ejemplo: <span className="mono">mecatronica-2025-c2</span>. Se usa para importar/exportar y no se muestra al alumno.
+            El ID se genera automaticamente para evitar colisiones. El archivo exportado usa el nombre del plan.
           </p>
-          <div className="field-row three metadata-grid" style={{ marginTop: '0.65rem' }}>
-            <div>
-              <label>ID</label>
-              <input
-                className="input"
-                value={envelope.metadata.id || ''}
-                onChange={(event) => updateMetadata('id', event.target.value)}
-              />
-            </div>
+          <div className="field-row two metadata-grid" style={{ marginTop: '0.65rem' }}>
             <div>
               <label>Nombre</label>
               <input
@@ -697,6 +896,9 @@ export default function CurriculumStudio() {
                 onChange={(event) => updateMetadata('institution', event.target.value)}
               />
             </div>
+          </div>
+          <div className="compact-meta" style={{ marginTop: '0.65rem' }}>
+            ID automatico: <span className="mono">{autoMetadataId}</span>
           </div>
         </section>
 
@@ -968,6 +1170,16 @@ export default function CurriculumStudio() {
           </div>
         </section>
       </main>
+
+      <CatalogPickerModal
+        open={catalogModalOpen}
+        plans={catalog}
+        universities={catalogUniversities}
+        faculties={catalogFaculties}
+        selectedPlanId={selectedCatalogId}
+        onClose={() => setCatalogModalOpen(false)}
+        onSelectPlan={handleSelectCatalogPlan}
+      />
     </div>
   );
 }
