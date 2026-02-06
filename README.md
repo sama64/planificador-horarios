@@ -1,38 +1,62 @@
-# sv
+# Planificador Horarios (Next.js)
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Repositorio principal del planificador academico, ahora ejecutando la app Next.js desde la raiz.
 
-## Creating a project
+## What is included
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Mobile-first planner UI for:
+  - curriculum selection/import
+  - passed classes selection
+  - optional QoL constraints/preferences
+  - generating optimized plans
+- `Curriculum Studio` page to create/edit/import/export curriculums.
+- API route (`/api/solve`) wired to algorithm stage entrypoint:
+  - `src/lib/algorithm/entrypoint.js`
 
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Run
 
 ```bash
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+## Curriculum format
 
-To create a production version of your app:
+The app supports two input styles:
 
-```bash
-npm run build
+1. Raw class array (legacy)
+2. Envelope format (`schedule-curriculum-v1`):
+
+```json
+{
+  "formatVersion": "schedule-curriculum-v1",
+  "metadata": {
+    "id": "mecatronica-2025C2",
+    "name": "Ingenieria Mecatronica 2025 C2",
+    "institution": "UNLaM",
+    "degree": "Ingenieria Mecatronica",
+    "updatedAt": "2026-02-06T00:00:00.000Z"
+  },
+  "classes": [
+    {
+      "id": 1,
+      "name": "Materia",
+      "hours": 128,
+      "prerequisites": [],
+      "scheduleOptions": [
+        {
+          "schedule": [
+            { "day": "Lunes", "startTime": "08:00", "endTime": "10:00" }
+          ]
+        }
+      ]
+    }
+  ]
+}
 ```
 
-You can preview the production build with `npm run preview`.
+## Stage plan
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- Stage 1: foundation + usable end-to-end flow (this delivery).
+- Stage 2: UX polish, validations, richer result views and conflict explanation.
+- Stage 3: deployment packaging and curriculum sharing workflow improvements.
