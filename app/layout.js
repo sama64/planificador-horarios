@@ -1,4 +1,5 @@
 import { Space_Grotesk, IBM_Plex_Mono } from 'next/font/google';
+import { Analytics } from "@vercel/analytics/next"
 
 import './globals.css';
 
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <body className={`${sansFont.variable} ${monoFont.variable}`}>
+        <Analytics />
         <div className="page-shell">{children}</div>
       </body>
     </html>

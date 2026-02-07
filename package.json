@@ -11,6 +11,7 @@
     "bench:algorithm": "node scripts/benchmark-schedulers.js"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "glpk.js": "^4.0.2",
     "next": "15.5.12",
     "react": "19.0.0",
