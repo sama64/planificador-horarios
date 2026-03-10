@@ -53,7 +53,7 @@ test('critical-path greedy produces valid schedules near oracle on random small 
 });
 
 test('critical-path greedy handles mecatronica dataset and returns valid output', () => {
-  const datasetPath = path.resolve(process.cwd(), '..', 'mecatronica-2025C2.json');
+  const datasetPath = path.resolve(process.cwd(), 'public/curriculums/mecatronica-2025C2.json');
   const classes = JSON.parse(fs.readFileSync(datasetPath, 'utf8'));
 
   const result = solveWithCriticalPathGreedy(classes, {

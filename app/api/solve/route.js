@@ -5,6 +5,7 @@ import { parseCurriculumPayload } from '@/lib/curriculum-format.js';
 
 function enrichResultWithClasses(classes, result) {
   const classMap = new Map(classes.map((cls) => [cls.id, cls]));
+  const classOrder = new Map(classes.map((cls, index) => [cls.id, index]));
   const scheduleByPeriod = {};
 
   for (const [classIdRaw, assignment] of Object.entries(result.assignments || {})) {
@@ -32,7 +33,7 @@ function enrichResultWithClasses(classes, result) {
   }
 
   for (const period of Object.keys(scheduleByPeriod)) {
-    scheduleByPeriod[period].sort((a, b) => a.className.localeCompare(b.className, 'es'));
+    scheduleByPeriod[period].sort((a, b) => (classOrder.get(a.classId) ?? 0) - (classOrder.get(b.classId) ?? 0));
   }
 
   return {

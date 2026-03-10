@@ -6,7 +6,12 @@ import { usePathname } from 'next/navigation';
 
 import CatalogPickerModal from '@/components/CatalogPickerModal.jsx';
 import { parseCatalogPayload } from '@/lib/catalog-format.js';
-import { DAY_OPTIONS, DEFAULT_CONSTRAINTS, TIME_PREFERENCE_OPTIONS } from '@/lib/defaults.js';
+import {
+  DAY_OPTIONS,
+  DEFAULT_CONSTRAINTS,
+  DEFAULT_MAX_CLASSES_PER_PERIOD,
+  TIME_PREFERENCE_OPTIONS
+} from '@/lib/defaults.js';
 import { parseCurriculumPayload, serializeCurriculumEnvelope } from '@/lib/curriculum-format.js';
 
 function toConstraintPayload(state, passedClassIds) {
@@ -314,7 +319,10 @@ export default function SchedulerWorkspace() {
     let count = 0;
     if (constraints.timePreference) count += 1;
     if (constraints.avoidSaturdays) count += 1;
-    if (constraints.maxClassesPerPeriod !== '') count += 1;
+    if (
+      constraints.maxClassesPerPeriod !== ''
+      && Number(constraints.maxClassesPerPeriod) !== DEFAULT_MAX_CLASSES_PER_PERIOD
+    ) count += 1;
     if (constraints.maxWeeklyHoursPerPeriod !== '') count += 1;
     if (constraints.forbiddenDays.length > 0) count += 1;
     if (constraints.keepFreeDays.length > 0) count += 1;

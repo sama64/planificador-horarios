@@ -1,6 +1,14 @@
 import { buildConflictMatrix, normalizeClasses } from './model.js';
 
-export function validatePlan(rawClasses, plan, { requireAllClasses = true } = {}) {
+function optionWeeklyMinutes(option) {
+  return option.blocks.reduce((total, block) => total + (block.end - block.start), 0);
+}
+
+export function validatePlan(rawClasses, plan, {
+  requireAllClasses = true,
+  maxClassesPerPeriod = null,
+  maxWeeklyHoursPerPeriod = null
+} = {}) {
   const classes = normalizeClasses(rawClasses);
   const conflictMatrix = buildConflictMatrix(classes);
 
@@ -97,6 +105,31 @@ export function validatePlan(rawClasses, plan, { requireAllClasses = true } = {}
   }
 
   for (const [period, classIndices] of byPeriod.entries()) {
+    if (Number.isFinite(maxClassesPerPeriod) && classIndices.length > maxClassesPerPeriod) {
+      violations.push({
+        type: 'MAX_CLASSES_PER_PERIOD_EXCEEDED',
+        period,
+        count: classIndices.length,
+        maxAllowed: maxClassesPerPeriod
+      });
+    }
+
+    if (Number.isFinite(maxWeeklyHoursPerPeriod)) {
+      const totalWeeklyMinutes = classIndices.reduce(
+        (total, classIndex) => total + optionWeeklyMinutes(classes[classIndex].scheduleOptions[optionByClass[classIndex]]),
+        0
+      );
+
+      if (totalWeeklyMinutes > Math.round(maxWeeklyHoursPerPeriod * 60)) {
+        violations.push({
+          type: 'MAX_WEEKLY_HOURS_PER_PERIOD_EXCEEDED',
+          period,
+          minutes: totalWeeklyMinutes,
+          maxAllowedMinutes: Math.round(maxWeeklyHoursPerPeriod * 60)
+        });
+      }
+    }
+
     for (let i = 0; i < classIndices.length; i += 1) {
       const classA = classIndices[i];
       const optionA = optionByClass[classA];

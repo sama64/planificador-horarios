@@ -1,6 +1,7 @@
 import { solveWithMipMinPeriods } from './solvers/mipMinPeriods.js';
 import { normalizeClasses } from './model.js';
 import { validatePlan } from './validate.js';
+import { DEFAULT_MAX_CLASSES_PER_PERIOD } from '../../../lib/defaults.js';
 
 function canonicalizeDay(day) {
   if (typeof day !== 'string') {
@@ -128,6 +129,8 @@ function normalizeConstraints(userConstraints = {}) {
   const penaltyWeights = userConstraints.penaltyWeights && typeof userConstraints.penaltyWeights === 'object'
     ? userConstraints.penaltyWeights
     : {};
+  const rawMaxClassesPerPeriod = Number(userConstraints.maxClassesPerPeriod);
+  const rawMaxWeeklyHoursPerPeriod = Number(userConstraints.maxWeeklyHoursPerPeriod);
 
   return {
     passedClassIds: Array.isArray(userConstraints.passedClassIds)
@@ -139,12 +142,12 @@ function normalizeConstraints(userConstraints = {}) {
     avoidSaturdaysMode: userConstraints.avoidSaturdaysMode === 'hard' ? 'hard' : 'soft',
     timePreference: normalizeTimePreference(userConstraints.timePreference),
     timePreferenceMode: userConstraints.timePreferenceMode === 'hard' ? 'hard' : 'soft',
-    maxWeeklyHoursPerPeriod: Number.isFinite(userConstraints.maxWeeklyHoursPerPeriod)
-      ? Number(userConstraints.maxWeeklyHoursPerPeriod)
+    maxWeeklyHoursPerPeriod: Number.isFinite(rawMaxWeeklyHoursPerPeriod) && rawMaxWeeklyHoursPerPeriod > 0
+      ? rawMaxWeeklyHoursPerPeriod
       : null,
-    maxClassesPerPeriod: Number.isFinite(userConstraints.maxClassesPerPeriod)
-      ? Number(userConstraints.maxClassesPerPeriod)
-      : null,
+    maxClassesPerPeriod: Number.isFinite(rawMaxClassesPerPeriod) && rawMaxClassesPerPeriod > 0
+      ? Math.floor(rawMaxClassesPerPeriod)
+      : DEFAULT_MAX_CLASSES_PER_PERIOD,
     penaltyWeights: {
       timePreference: Number.isFinite(penaltyWeights.timePreference) ? Number(penaltyWeights.timePreference) : 5,
       saturday: Number.isFinite(penaltyWeights.saturday) ? Number(penaltyWeights.saturday) : 3
@@ -332,6 +335,9 @@ export function solveScheduleWithConstraints(rawClasses, userConstraints = {}, s
   const validation = validatePlan(preprocessed.activeClasses, {
     assignments: remappedAssignments,
     totalPeriods: solverResult.totalPeriods
+  }, {
+    maxClassesPerPeriod: constraints.maxClassesPerPeriod,
+    maxWeeklyHoursPerPeriod: constraints.maxWeeklyHoursPerPeriod
   });
 
   if (!validation.valid) {
