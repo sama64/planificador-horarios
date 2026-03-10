@@ -137,6 +137,7 @@ const FLOW_STEPS = [
 export default function SchedulerWorkspace() {
   const pathname = usePathname();
   const stepperRef = useRef(null);
+  const resultRef = useRef(null);
   const [catalog, setCatalog] = useState([]);
   const [catalogUniversities, setCatalogUniversities] = useState([]);
   const [catalogFaculties, setCatalogFaculties] = useState([]);
@@ -449,6 +450,24 @@ export default function SchedulerWorkspace() {
       });
     });
   }, [currentStep, availableStepIds]);
+
+  useEffect(() => {
+    if (!result) {
+      return;
+    }
+
+    const resultPanel = resultRef.current;
+    if (!(resultPanel instanceof HTMLElement)) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      resultPanel.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    });
+  }, [result]);
 
   const currentStepIndex = FLOW_STEPS.findIndex((step) => step.id === currentStep);
   const currentStepMeta = FLOW_STEPS[currentStepIndex] || FLOW_STEPS[0];
@@ -968,7 +987,7 @@ export default function SchedulerWorkspace() {
         </section>
 
         {result && (
-          <section className="surface panel planner-result">
+          <section ref={resultRef} className="surface panel planner-result">
           <h2>Plan generado</h2>
 
           {status && (result || loading) && <div className="notice ok">{status}</div>}
