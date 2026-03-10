@@ -121,8 +121,18 @@ function ActionIcon({ name }) {
   if (name === 'settings') {
     return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.8 7.8 0 0 0 .1-2l2-1.5-2-3.4-2.3.9a7.5 7.5 0 0 0-1.7-1l-.3-2.4h-4l-.3 2.4c-.6.2-1.2.6-1.7 1l-2.3-.9-2 3.4 2 1.5a7.8 7.8 0 0 0 .1 2l-2 1.5 2 3.4 2.3-.9c.5.4 1.1.8 1.7 1l.3 2.4h4l.3-2.4c.6-.2 1.2-.6 1.7-1l2.3.9 2-3.4-2-1.5zM12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" fill="currentColor" /></svg>;
   }
+  if (name === 'more') {
+    return <svg className="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" fill="currentColor" /></svg>;
+  }
   return null;
 }
+
+const FLOW_STEPS = [
+  { id: 1, title: 'Plan', description: 'Selecciona tu carrera.' },
+  { id: 2, title: 'Regulares', description: 'Marca solo las materias que ya estan aprobadas o regularizadas.' },
+  { id: 3, title: 'Preferencias', description: 'Opcional. Ajusta limites o preferencias antes de generar.' },
+  { id: 4, title: 'Resultado', description: 'Revisa el plan generado.' }
+];
 
 export default function SchedulerWorkspace() {
   const pathname = usePathname();
@@ -144,8 +154,10 @@ export default function SchedulerWorkspace() {
   const [activeSource, setActiveSource] = useState('catalog');
   const [catalogModalOpen, setCatalogModalOpen] = useState(false);
   const [showCustomImport, setShowCustomImport] = useState(false);
+  const [showPlanActionsMenu, setShowPlanActionsMenu] = useState(false);
   const [showOptionalPreferences, setShowOptionalPreferences] = useState(false);
   const [showAdvancedPreferences, setShowAdvancedPreferences] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
     async function boot() {
@@ -158,7 +170,7 @@ export default function SchedulerWorkspace() {
         setCatalogFaculties(parsedCatalog.faculties);
 
         if (parsedCatalog.plans.length > 0) {
-          await loadBuiltInCurriculum(parsedCatalog.plans[0]);
+          await loadBuiltInCurriculum(parsedCatalog.plans[0], { advanceStep: false });
           setSelectedCatalogId(parsedCatalog.plans[0].id);
         }
 
@@ -198,7 +210,7 @@ export default function SchedulerWorkspace() {
     );
   }, [classes, search]);
 
-  async function loadBuiltInCurriculum(item) {
+  async function loadBuiltInCurriculum(item, { advanceStep = true } = {}) {
     try {
       setStatus('Cargando plan de estudio...');
       setError('');
@@ -223,7 +235,11 @@ export default function SchedulerWorkspace() {
       setSelectedCatalogId(item.id);
       setActiveSource('catalog');
       setShowCustomImport(false);
+      setShowPlanActionsMenu(false);
       setStatus(`Plan de estudio cargado: ${parsed.metadata.name} (${parsed.classes.length} materias)`);
+      if (advanceStep) {
+        setCurrentStep(2);
+      }
     } catch (loadError) {
       setError(`No se pudo cargar el plan de estudio: ${loadError.message}`);
     }
@@ -255,7 +271,9 @@ export default function SchedulerWorkspace() {
     setSelectedCatalogId('');
     setActiveSource('custom');
     setShowCustomImport(true);
+    setShowPlanActionsMenu(false);
     setStatus(`Plan de estudio importado (${sourceLabel}): ${parsed.metadata.name} (${parsed.classes.length} materias)`);
+    setCurrentStep(2);
   }
 
   function handleImportFile(event) {
@@ -383,6 +401,64 @@ export default function SchedulerWorkspace() {
     [coloredScheduleByPeriod]
   );
 
+  const availableStepIds = useMemo(() => {
+    const available = new Set([1]);
+    if (curriculum && classes.length > 0) {
+      available.add(2);
+      available.add(3);
+    }
+    if (result) {
+      available.add(4);
+    }
+    return available;
+  }, [classes.length, curriculum, result]);
+
+  useEffect(() => {
+    if (!availableStepIds.has(currentStep)) {
+      if (!curriculum || classes.length === 0) {
+        setCurrentStep(1);
+        return;
+      }
+
+      if (result) {
+        setCurrentStep(4);
+        return;
+      }
+
+      setCurrentStep(3);
+    }
+  }, [availableStepIds, classes.length, currentStep, curriculum, result]);
+
+  const currentStepIndex = FLOW_STEPS.findIndex((step) => step.id === currentStep);
+  const currentStepMeta = FLOW_STEPS[currentStepIndex] || FLOW_STEPS[0];
+  function goToStep(stepId) {
+    if (!availableStepIds.has(stepId)) {
+      return;
+    }
+
+    setCurrentStep(stepId);
+  }
+
+  function goToNextStep() {
+    for (let index = currentStepIndex + 1; index < FLOW_STEPS.length; index += 1) {
+      const stepId = FLOW_STEPS[index].id;
+      if (availableStepIds.has(stepId)) {
+        setCurrentStep(stepId);
+        return;
+      }
+    }
+  }
+
+  function goToPreviousStep() {
+    for (let index = currentStepIndex - 1; index >= 0; index -= 1) {
+      const stepId = FLOW_STEPS[index].id;
+      if (availableStepIds.has(stepId)) {
+        setCurrentStep(stepId);
+        return;
+      }
+    }
+  }
+
   async function solveSchedule() {
     if (!curriculum || classes.length === 0) {
       setError('Primero carga un plan de estudio valido.');
@@ -414,6 +490,7 @@ export default function SchedulerWorkspace() {
 
       setResult(payload);
       setStatus(`Plan generado en ${payload.totalPeriods} cuatrimestes (${payload.meta.optimality}).`);
+      setCurrentStep(4);
     } catch (solveError) {
       setError(solveError.message);
       setStatus('');
@@ -430,6 +507,367 @@ export default function SchedulerWorkspace() {
     }
   }
 
+  function toggleImportPanel() {
+    setShowCustomImport((prev) => !prev);
+    setShowPlanActionsMenu(false);
+  }
+
+  const canGoBack = currentStepIndex > 0 && FLOW_STEPS.slice(0, currentStepIndex).some((step) => availableStepIds.has(step.id));
+  const canGoForward = currentStep < 3
+    && FLOW_STEPS.slice(currentStepIndex + 1, 3).some((step) => availableStepIds.has(step.id));
+
+  let activeStepContent = null;
+
+  if (currentStep === 1) {
+    activeStepContent = (
+      <>
+        <div style={{ marginTop: '0.75rem' }}>
+          <label>Catalogo de planes</label>
+          <div className="plan-source-actions desktop-plan-actions">
+            <button
+              type="button"
+              className="button-accent button-with-icon catalog-open-button"
+              onClick={() => setCatalogModalOpen(true)}
+              disabled={catalog.length === 0}
+            >
+              <ActionIcon name="search" />
+              Ver planes
+            </button>
+            <button className="ghost button-with-icon plan-import-button" type="button" onClick={toggleImportPanel}>
+              <ActionIcon name="import" />
+              {showCustomImport ? 'Ocultar importacion avanzada' : 'Importar'}
+            </button>
+          </div>
+          <div className="mobile-plan-actions">
+            <div className="plan-split-actions">
+              <div className="actions-menu plan-actions-menu">
+                <button
+                  type="button"
+                  className="ghost button-with-icon actions-menu-trigger plan-split-toggle"
+                  onClick={() => setShowPlanActionsMenu((prev) => !prev)}
+                  aria-expanded={showPlanActionsMenu}
+                  aria-label="Mas acciones"
+                >
+                  <ActionIcon name="more" />
+                </button>
+                {showPlanActionsMenu && (
+                  <div className="actions-menu-list">
+                    <button className="ghost button-with-icon" type="button" onClick={toggleImportPanel}>
+                      <ActionIcon name="import" />
+                      {showCustomImport ? 'Ocultar importacion' : 'Importar'}
+                    </button>
+                    {activeSource === 'custom' && (
+                      <button className="warn button-with-icon" type="button" onClick={restoreCatalogCurriculum}>
+                        <ActionIcon name="back" />
+                        Volver al catalogo
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+              <button
+                type="button"
+                className="button-accent button-with-icon catalog-open-button plan-split-main"
+                onClick={() => setCatalogModalOpen(true)}
+                disabled={catalog.length === 0}
+              >
+                <ActionIcon name="search" />
+                Ver planes
+              </button>
+            </div>
+          </div>
+          {activeSource === 'custom' && (
+            <button className="warn button-with-icon desktop-restore-button" style={{ marginTop: '0.5rem' }} type="button" onClick={restoreCatalogCurriculum}>
+              <ActionIcon name="back" />
+              Volver al catalogo
+            </button>
+          )}
+        </div>
+
+        {showCustomImport && (
+          <div className="notice warn" style={{ marginTop: '0.75rem' }}>
+            <div style={{ marginBottom: '0.45rem' }}>
+              Usa esta seccion solo si vas a cargar o modificar un plan de estudio propio.
+            </div>
+            <div className="field-row two">
+              <div>
+                <label>Importar archivo .json</label>
+                <input className="input" type="file" accept="application/json" onChange={handleImportFile} />
+              </div>
+              <div>
+                <label>Importar desde texto</label>
+                <button className="ghost button-with-icon" onClick={handleImportText} type="button">
+                  <ActionIcon name="text" />
+                  Usar JSON pegado
+                </button>
+              </div>
+            </div>
+            <div style={{ marginTop: '0.65rem' }}>
+              <label>JSON</label>
+              <textarea
+                className="textarea"
+                value={importText}
+                onChange={(event) => setImportText(event.target.value)}
+                placeholder="Pega aqui un plan de estudio en formato JSON"
+              />
+            </div>
+          </div>
+        )}
+        {curriculum && (
+          <div className="notice ok">
+            <strong>{curriculum.metadata.name}</strong>
+            {activeSource === 'catalog' && selectedCatalogPlan && (
+              <>
+                <div className="mono">{selectedCatalogPlan.university?.name || 'Universidad no especificada'}</div>
+                <div className="mono">{selectedCatalogPlan.faculty?.name || 'Facultad no especificada'}</div>
+                <div className="compact-meta">Ultima actualizacion: {formatUpdatedDate(selectedCatalogPlan.lastUpdated)}</div>
+              </>
+            )}
+            <div className="mono">{curriculum.classes.length} materias detectadas</div>
+            <div className="mono">Fuente activa: {activeSource === 'catalog' ? 'catalogo' : 'json personalizado'}</div>
+          </div>
+        )}
+      </>
+    );
+  } else if (currentStep === 2) {
+    activeStepContent = (
+      <>
+        <div style={{ marginTop: '0.65rem', marginBottom: '0.65rem' }}>
+          <label>Buscar materia</label>
+          <input
+            className="input"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Ej: algebra, fisica, 12"
+          />
+        </div>
+        <div className="list-scroll">
+          {filteredClasses.map((cls) => (
+            <label key={cls.id} className="check-item">
+              <input
+                type="checkbox"
+                checked={passedClassIds.includes(cls.id)}
+                onChange={() => togglePassed(cls.id)}
+              />
+              <span>
+                <strong>{cls.name}</strong>
+                <span className="mono">#{cls.id}</span>
+              </span>
+            </label>
+          ))}
+          {filteredClasses.length === 0 && <p className="mono">No hay coincidencias.</p>}
+        </div>
+        <p style={{ marginTop: '0.6rem' }}>
+          Regulares: <strong>{passedClassIds.length}</strong>
+        </p>
+      </>
+    );
+  } else if (currentStep === 3) {
+    activeStepContent = (
+      <>
+        <div className="action-row" style={{ marginTop: '0.85rem' }}>
+          <button className="primary button-with-icon" onClick={solveSchedule} disabled={loading || !curriculum} type="button">
+            <ActionIcon name="spark" />
+            {loading ? 'Optimizando...' : 'Generar plan optimizado'}
+          </button>
+          <button
+            className="link-button button-with-icon"
+            type="button"
+            onClick={() =>
+              setShowOptionalPreferences((prev) => {
+                const next = !prev;
+                if (!next) {
+                  setShowAdvancedPreferences(false);
+                }
+                return next;
+              })
+            }
+          >
+            <ActionIcon name="settings" />
+            {showOptionalPreferences ? 'Ocultar preferencias' : activePreferenceCount > 0 ? 'Editar preferencias' : 'Configurar preferencias'}
+          </button>
+        </div>
+
+        {!showOptionalPreferences && activePreferenceCount === 0 && (
+          <div className="compact-ok" style={{ marginTop: '0.75rem' }}>
+            <strong>Configuracion simple activa</strong>
+            <span>Maximo: {DEFAULT_MAX_CLASSES_PER_PERIOD} materias por cuatrimestre.</span>
+          </div>
+        )}
+
+        {!showOptionalPreferences && activePreferenceCount > 0 && (
+          <div className="compact-meta" style={{ marginTop: '0.75rem' }}>
+            {preferenceSummary}
+          </div>
+        )}
+
+        {showOptionalPreferences && (
+          <div className="soft-panel" style={{ marginTop: '0.75rem' }}>
+            <div className="action-row" style={{ marginBottom: '0.6rem' }}>
+              <span className="compact-meta">Preferencias activas: {activePreferenceCount}</span>
+              <button
+                className="ghost"
+                type="button"
+                onClick={() => {
+                  setConstraints(DEFAULT_CONSTRAINTS);
+                  setResult(null);
+                  setShowAdvancedPreferences(false);
+                }}
+              >
+                Reset preferencias
+              </button>
+            </div>
+
+            <div className="field-row two" style={{ marginBottom: '0.6rem' }}>
+              <div>
+                <label>Preferencia horaria rapida</label>
+                <select
+                  className="select"
+                  value={constraints.timePreference}
+                  onChange={(event) => updateConstraint('timePreference', event.target.value)}
+                >
+                  {TIME_PREFERENCE_OPTIONS.map((item) => (
+                    <option value={item.value} key={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label>Preferencia de sabados</label>
+                <select
+                  className="select"
+                  value={getSaturdayPreferenceValue(constraints)}
+                  onChange={(event) => updateSaturdayPreference(event.target.value)}
+                >
+                  <option value="none">Sin preferencia</option>
+                  <option value="soft">Intentar evitar sabados</option>
+                  <option value="hard">No cursar sabados</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="action-row" style={{ marginTop: '0.4rem' }}>
+              <button className="ghost" type="button" onClick={() => setShowAdvancedPreferences((prev) => !prev)}>
+                {showAdvancedPreferences ? 'Ocultar ajustes avanzados' : 'Mostrar ajustes avanzados'}
+              </button>
+            </div>
+
+            {showAdvancedPreferences && (
+              <div className="soft-panel" style={{ marginTop: '0.75rem' }}>
+                <div style={{ marginBottom: '0.45rem' }}>
+                  Ajustes avanzados para casos especiales.
+                </div>
+
+                <div className="field-row two" style={{ marginBottom: '0.6rem' }}>
+                  <div>
+                    <label>Max clases por cuatrimestre</label>
+                    <input
+                      className="input"
+                      type="number"
+                      min="1"
+                      value={constraints.maxClassesPerPeriod}
+                      onChange={(event) => updateConstraint('maxClassesPerPeriod', event.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label>Max horas semanales por cuatrimestre</label>
+                    <input
+                      className="input"
+                      type="number"
+                      min="1"
+                      value={constraints.maxWeeklyHoursPerPeriod}
+                      onChange={(event) => updateConstraint('maxWeeklyHoursPerPeriod', event.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="field-row two" style={{ marginBottom: '0.6rem' }}>
+                  <div>
+                    <label>Modo preferencia horaria</label>
+                    <select
+                      className="select"
+                      value={constraints.timePreferenceMode}
+                      onChange={(event) => updateConstraint('timePreferenceMode', event.target.value)}
+                    >
+                      <option value="soft">Suave (penaliza)</option>
+                      <option value="hard">Estricto (filtra)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>Modo sabados</label>
+                    <select
+                      className="select"
+                      value={constraints.avoidSaturdaysMode}
+                      onChange={(event) => updateConstraint('avoidSaturdaysMode', event.target.value)}
+                      disabled={!constraints.avoidSaturdays}
+                    >
+                      <option value="soft">Suave (penaliza)</option>
+                      <option value="hard">Estricto (filtra)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: '0.6rem' }}>
+                  <label>Dias prohibidos (hard)</label>
+                  <div className="field-row three">
+                    {DAY_OPTIONS.map((day) => (
+                      <label key={`forbidden-${day}`} className="check-item" style={{ border: '1px solid var(--line)', borderRadius: 10 }}>
+                        <input
+                          type="checkbox"
+                          checked={constraints.forbiddenDays.includes(day)}
+                          onChange={() => updateConstraint('forbiddenDays', toggleInArray(constraints.forbiddenDays, day))}
+                        />
+                        <span>{day}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: '0.6rem' }}>
+                  <label>Dias libres deseados (hard)</label>
+                  <div className="field-row three">
+                    {DAY_OPTIONS.map((day) => (
+                      <label key={`free-${day}`} className="check-item" style={{ border: '1px solid var(--line)', borderRadius: 10 }}>
+                        <input
+                          type="checkbox"
+                          checked={constraints.keepFreeDays.includes(day)}
+                          onChange={() => updateConstraint('keepFreeDays', toggleInArray(constraints.keepFreeDays, day))}
+                        />
+                        <span>{day}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="field-row two">
+                  <div>
+                    <label>Peso penalty horario (soft)</label>
+                    <input
+                      className="input"
+                      type="number"
+                      min="0"
+                      value={constraints.penaltyWeights.timePreference}
+                      onChange={(event) => updatePenalty('timePreference', event.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label>Peso penalty sabado (soft)</label>
+                    <input
+                      className="input"
+                      type="number"
+                      min="0"
+                      value={constraints.penaltyWeights.saturday}
+                      onChange={(event) => updatePenalty('saturday', event.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="container">
       <header className="surface header">
@@ -444,384 +882,117 @@ export default function SchedulerWorkspace() {
         </div>
       </header>
 
-      <main className="planner-layout">
+      <main className={`planner-layout ${result ? 'has-result' : 'no-result'}`}>
         <section className="planner-steps">
-          <article className="surface panel">
-            <h2>1. Plan de estudio</h2>
-            <p>Selecciona tu carrera para empezar.</p>
-            <div style={{ marginTop: '0.75rem' }}>
-              <label>Catalogo de planes</label>
-              <div className="plan-source-actions">
-                <button
-                  type="button"
-                  className="button-accent button-with-icon catalog-open-button"
-                  onClick={() => setCatalogModalOpen(true)}
-                  disabled={catalog.length === 0}
-                >
-                  <ActionIcon name="search" />
-                  Ver planes
-                </button>
-                <button className="ghost button-with-icon plan-import-button" type="button" onClick={() => setShowCustomImport((prev) => !prev)}>
-                  <ActionIcon name="import" />
-                  {showCustomImport ? 'Ocultar importacion avanzada' : 'Importar'}
-                </button>
+          <article className="surface panel planner-flow-panel">
+            <div className="planner-flow-head">
+              <div className="planner-stepper planner-stepper-horizontal" aria-label="Pasos del planificador">
+                {FLOW_STEPS.map((step) => {
+                  const unlocked = availableStepIds.has(step.id);
+                  const completed = unlocked && step.id < currentStep;
+                  return (
+                    <button
+                      key={step.id}
+                      type="button"
+                      className={`planner-step-chip ${currentStep === step.id ? 'active' : ''} ${completed ? 'completed' : ''}`}
+                      onClick={() => goToStep(step.id)}
+                      disabled={!unlocked}
+                    >
+                      <span className="planner-step-index">{step.id}</span>
+                      <span className="planner-step-label">{step.title}</span>
+                    </button>
+                  );
+                })}
               </div>
-              {activeSource === 'custom' && (
-                <button className="warn button-with-icon" style={{ marginTop: '0.5rem' }} type="button" onClick={restoreCatalogCurriculum}>
-                  <ActionIcon name="back" />
-                  Volver al catalogo
-                </button>
+            </div>
+
+              <div className="planner-step-body">
+                <div>
+                  <h2>{currentStepMeta.title}</h2>
+                  <p>{currentStepMeta.description}</p>
+                </div>
+              {activeStepContent}
+              {currentStep === 4 && result && (
+                <div className="notice ok" style={{ marginTop: '0.75rem' }}>
+                  El resultado ya esta listo. Puedes volver a cualquier paso para ajustar datos y regenerar.
+                </div>
               )}
             </div>
 
-            {selectedCatalogPlan && activeSource === 'catalog' && (
-              <div className="catalog-selection-summary">
-                <strong>{selectedCatalogPlan.name}</strong>
-                <div className="mono">{selectedCatalogPlan.university?.name || 'Universidad no especificada'}</div>
-                <div className="mono">{selectedCatalogPlan.faculty?.name || 'Facultad no especificada'}</div>
-                <div className="compact-meta">Ultima actualizacion: {formatUpdatedDate(selectedCatalogPlan.lastUpdated)}</div>
-              </div>
-            )}
-
-            {showCustomImport && (
-              <div className="notice warn" style={{ marginTop: '0.75rem' }}>
-                <div style={{ marginBottom: '0.45rem' }}>
-                  Usa esta seccion solo si vas a cargar o modificar un plan de estudio propio.
-                </div>
-                <div className="field-row two">
-                  <div>
-                    <label>Importar archivo .json</label>
-                    <input className="input" type="file" accept="application/json" onChange={handleImportFile} />
-                  </div>
-                  <div>
-                    <label>Importar desde texto</label>
-                    <button className="ghost button-with-icon" onClick={handleImportText} type="button">
-                      <ActionIcon name="text" />
-                      Usar JSON pegado
-                    </button>
-                  </div>
-                </div>
-                <div style={{ marginTop: '0.65rem' }}>
-                  <label>JSON</label>
-                  <textarea
-                    className="textarea"
-                    value={importText}
-                    onChange={(event) => setImportText(event.target.value)}
-                    placeholder="Pega aqui un plan de estudio en formato JSON"
-                  />
-                </div>
-              </div>
-            )}
-            {curriculum && (
-              <div className="notice ok">
-                <strong>{curriculum.metadata.name}</strong>
-                <div className="mono">{curriculum.classes.length} materias detectadas</div>
-                <div className="mono">Fuente activa: {activeSource === 'catalog' ? 'catalogo' : 'json personalizado'}</div>
-              </div>
-            )}
-          </article>
-
-          <article className="surface panel">
-            <h2>2. Materias Regulares</h2>
-            <div style={{ marginBottom: '0.65rem' }}>
-              <label>Buscar materia</label>
-              <input
-                className="input"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Ej: algebra, fisica, 12"
-              />
-            </div>
-            <div className="list-scroll">
-              {filteredClasses.map((cls) => (
-                <label key={cls.id} className="check-item">
-                  <input
-                    type="checkbox"
-                    checked={passedClassIds.includes(cls.id)}
-                    onChange={() => togglePassed(cls.id)}
-                  />
-                  <span>
-                    <strong>{cls.name}</strong>
-                    <span className="mono">#{cls.id}</span>
-                  </span>
-                </label>
-              ))}
-              {filteredClasses.length === 0 && <p className="mono">No hay coincidencias.</p>}
-            </div>
-            <p style={{ marginTop: '0.6rem' }}>
-              Regulares: <strong>{passedClassIds.length}</strong>
-            </p>
-          </article>
-
-          <article className="surface panel">
-            <h2>3. Paso opcional: preferencias</h2>
-            <p>Si no configuras nada, el plan igual se optimiza por menor cantidad de cuatrimestes.</p>
-
-            <div className="action-row" style={{ marginTop: '0.85rem' }}>
-              <button className="primary button-with-icon" onClick={solveSchedule} disabled={loading || !curriculum} type="button">
-                <ActionIcon name="spark" />
-                {loading ? 'Optimizando...' : 'Generar plan optimizado'}
+            <div className="planner-flow-actions">
+              <button className="ghost button-with-icon" type="button" onClick={goToPreviousStep} disabled={!canGoBack}>
+                <ActionIcon name="back" />
+                Anterior
               </button>
-              <button
-                className="link-button button-with-icon"
-                type="button"
-                onClick={() =>
-                  setShowOptionalPreferences((prev) => {
-                    const next = !prev;
-                    if (!next) {
-                      setShowAdvancedPreferences(false);
-                    }
-                    return next;
-                  })
-                }
-              >
-                <ActionIcon name="settings" />
-                {showOptionalPreferences ? 'Ocultar preferencias' : activePreferenceCount > 0 ? 'Editar preferencias' : 'Configurar preferencias'}
-              </button>
-            </div>
-
-            {!showOptionalPreferences && activePreferenceCount === 0 && (
-              <div className="compact-ok" style={{ marginTop: '0.75rem' }}>
-                <strong>Configuracion simple activa</strong>
-                <span>Se prioriza terminar en la menor cantidad de cuatrimestes.</span>
-              </div>
-            )}
-
-            {!showOptionalPreferences && activePreferenceCount > 0 && (
-              <div className="compact-meta" style={{ marginTop: '0.75rem' }}>
-                {preferenceSummary}
-              </div>
-            )}
-
-            {showOptionalPreferences && (
-              <div className="soft-panel" style={{ marginTop: '0.75rem' }}>
-                <div className="action-row" style={{ marginBottom: '0.6rem' }}>
-                  <span className="compact-meta">Preferencias activas: {activePreferenceCount}</span>
-                  <button
-                    className="ghost"
-                    type="button"
-                    onClick={() => {
-                      setConstraints(DEFAULT_CONSTRAINTS);
-                      setResult(null);
-                      setShowAdvancedPreferences(false);
-                    }}
-                  >
-                    Reset preferencias
+              <div className="planner-flow-actions-right">
+                {currentStep !== 4 && canGoForward && (
+                  <button className="button-accent" type="button" onClick={goToNextStep}>
+                    Continuar
                   </button>
-                </div>
-
-                <div className="field-row two" style={{ marginBottom: '0.6rem' }}>
-                  <div>
-                    <label>Preferencia horaria rapida</label>
-                    <select
-                      className="select"
-                      value={constraints.timePreference}
-                      onChange={(event) => updateConstraint('timePreference', event.target.value)}
-                    >
-                      {TIME_PREFERENCE_OPTIONS.map((item) => (
-                        <option value={item.value} key={item.value}>{item.label}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label>Preferencia de sabados</label>
-                    <select
-                      className="select"
-                      value={getSaturdayPreferenceValue(constraints)}
-                      onChange={(event) => updateSaturdayPreference(event.target.value)}
-                    >
-                      <option value="none">Sin preferencia</option>
-                      <option value="soft">Intentar evitar sabados</option>
-                      <option value="hard">No cursar sabados</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="action-row" style={{ marginTop: '0.4rem' }}>
-                  <button className="ghost" type="button" onClick={() => setShowAdvancedPreferences((prev) => !prev)}>
-                    {showAdvancedPreferences ? 'Ocultar ajustes avanzados' : 'Mostrar ajustes avanzados'}
+                )}
+                {currentStep !== 4 && currentStep !== 3 && !canGoForward && availableStepIds.has(3) && (
+                  <button className="button-accent" type="button" onClick={() => goToStep(3)}>
+                    Ir a preferencias
                   </button>
-                </div>
-
-                {showAdvancedPreferences && (
-                  <div className="soft-panel" style={{ marginTop: '0.75rem' }}>
-                    <div style={{ marginBottom: '0.45rem' }}>
-                      Ajustes avanzados para casos especiales.
-                    </div>
-
-                    <div className="field-row two" style={{ marginBottom: '0.6rem' }}>
-                      <div>
-                        <label>Max clases por cuatrimestre</label>
-                        <input
-                          className="input"
-                          type="number"
-                          min="1"
-                          value={constraints.maxClassesPerPeriod}
-                          onChange={(event) => updateConstraint('maxClassesPerPeriod', event.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label>Max horas semanales por cuatrimestre</label>
-                        <input
-                          className="input"
-                          type="number"
-                          min="1"
-                          value={constraints.maxWeeklyHoursPerPeriod}
-                          onChange={(event) => updateConstraint('maxWeeklyHoursPerPeriod', event.target.value)}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="field-row two" style={{ marginBottom: '0.6rem' }}>
-                      <div>
-                        <label>Modo preferencia horaria</label>
-                        <select
-                          className="select"
-                          value={constraints.timePreferenceMode}
-                          onChange={(event) => updateConstraint('timePreferenceMode', event.target.value)}
-                        >
-                          <option value="soft">Suave (penaliza)</option>
-                          <option value="hard">Estricto (filtra)</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label>Modo sabados</label>
-                        <select
-                          className="select"
-                          value={constraints.avoidSaturdaysMode}
-                          onChange={(event) => updateConstraint('avoidSaturdaysMode', event.target.value)}
-                          disabled={!constraints.avoidSaturdays}
-                        >
-                          <option value="soft">Suave (penaliza)</option>
-                          <option value="hard">Estricto (filtra)</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div style={{ marginBottom: '0.6rem' }}>
-                      <label>Dias prohibidos (hard)</label>
-                      <div className="field-row three">
-                        {DAY_OPTIONS.map((day) => (
-                          <label key={`forbidden-${day}`} className="check-item" style={{ border: '1px solid var(--line)', borderRadius: 10 }}>
-                            <input
-                              type="checkbox"
-                              checked={constraints.forbiddenDays.includes(day)}
-                              onChange={() => updateConstraint('forbiddenDays', toggleInArray(constraints.forbiddenDays, day))}
-                            />
-                            <span>{day}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div style={{ marginBottom: '0.6rem' }}>
-                      <label>Dias libres deseados (hard)</label>
-                      <div className="field-row three">
-                        {DAY_OPTIONS.map((day) => (
-                          <label key={`free-${day}`} className="check-item" style={{ border: '1px solid var(--line)', borderRadius: 10 }}>
-                            <input
-                              type="checkbox"
-                              checked={constraints.keepFreeDays.includes(day)}
-                              onChange={() => updateConstraint('keepFreeDays', toggleInArray(constraints.keepFreeDays, day))}
-                            />
-                            <span>{day}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="field-row two">
-                      <div>
-                        <label>Peso penalty horario (soft)</label>
-                        <input
-                          className="input"
-                          type="number"
-                          min="0"
-                          value={constraints.penaltyWeights.timePreference}
-                          onChange={(event) => updatePenalty('timePreference', event.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label>Peso penalty sabado (soft)</label>
-                        <input
-                          className="input"
-                          type="number"
-                          min="0"
-                          value={constraints.penaltyWeights.saturday}
-                          onChange={(event) => updatePenalty('saturday', event.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                )}
+                {currentStep === 4 && (
+                  <button className="button-accent" type="button" onClick={() => goToStep(3)}>
+                    Editar configuracion
+                  </button>
                 )}
               </div>
-            )}
+            </div>
           </article>
         </section>
 
-        <section className="surface panel planner-result">
+        {result && (
+          <section className="surface panel planner-result">
           <h2>Plan generado</h2>
 
           {status && (result || loading) && <div className="notice ok">{status}</div>}
           {error && <div className="notice error">{error}</div>}
+          <div className="meta-row" style={{ marginTop: '0.85rem' }}>
+            <span className="meta-item">Cuatrimestes: {result.totalPeriods}</span>
+            <span className="meta-item">Solver: {result.meta.delegatedSolver}</span>
+            <span className="meta-item">Optimalidad: {result.meta.optimality}</span>
+            <span className="meta-item">Runtime: {Math.round(result.meta.runtimeMs)}ms</span>
+          </div>
 
-          {!result && !loading && !error && (
-            <div className="result-empty-state" style={{ marginTop: '0.85rem' }}>
-              <strong>Listo para generar tu plan</strong>
-              <p>Completa estos pasos y presiona "Generar plan optimizado".</p>
-              <ol>
-                <li>Carga o importa un plan de estudio</li>
-                <li>Marca tus materias regulares</li>
-                <li>Configura preferencias (opcional)</li>
-              </ol>
-            </div>
-          )}
-
-          {result && (
-            <>
-              <div className="meta-row" style={{ marginTop: '0.85rem' }}>
-                <span className="meta-item">Cuatrimestes: {result.totalPeriods}</span>
-                <span className="meta-item">Solver: {result.meta.delegatedSolver}</span>
-                <span className="meta-item">Optimalidad: {result.meta.optimality}</span>
-                <span className="meta-item">Runtime: {Math.round(result.meta.runtimeMs)}ms</span>
-              </div>
-
-              <div className="schedule-grid" style={{ marginTop: '0.9rem' }}>
-                {orderedPeriods.map((period) => {
-                  const periodColor = RESULT_COLOR_PALETTE[positiveMod(period - 1, RESULT_COLOR_PALETTE.length)];
-                  return (
-                    <article
-                      key={period}
-                      className="period-card colorized"
+          <div className="schedule-grid" style={{ marginTop: '0.9rem' }}>
+            {orderedPeriods.map((period) => {
+              const periodColor = RESULT_COLOR_PALETTE[positiveMod(period - 1, RESULT_COLOR_PALETTE.length)];
+              return (
+                <article
+                  key={period}
+                  className="period-card colorized"
+                  style={{
+                    '--period-accent': periodColor.accent,
+                    '--period-tint': periodColor.panelTint,
+                    '--period-header': periodColor.headerTint
+                  }}
+                >
+                  <h3 className="period-title">Cuatrimestre {period}</h3>
+                  {coloredScheduleByPeriod[period].map((entry) => (
+                    <div
+                      className="class-chip colorized"
+                      key={`${period}-${entry.classId}`}
                       style={{
-                        '--period-accent': periodColor.accent,
-                        '--period-tint': periodColor.panelTint,
-                        '--period-header': periodColor.headerTint
+                        '--class-accent': entry.uiColor.accent,
+                        '--class-tint': entry.uiColor.tint
                       }}
                     >
-                      <h3 className="period-title">Cuatrimestre {period}</h3>
-                      {coloredScheduleByPeriod[period].map((entry) => (
-                        <div
-                          className="class-chip colorized"
-                          key={`${period}-${entry.classId}`}
-                          style={{
-                            '--class-accent': entry.uiColor.accent,
-                            '--class-tint': entry.uiColor.tint
-                          }}
-                        >
-                          <div className="chip-kicker">Materia #{entry.classId}</div>
-                          <strong>{entry.className}</strong>
-                          <div className="mono">Opcion {entry.optionIndex + 1}</div>
-                          <div className="mono">{formatScheduleBlocks(entry.schedule)}</div>
-                        </div>
-                      ))}
-                    </article>
-                  );
-                })}
-              </div>
-            </>
-          )}
-        </section>
+                      <div className="chip-kicker">Materia #{entry.classId}</div>
+                      <strong>{entry.className}</strong>
+                      <div className="mono">Opcion {entry.optionIndex + 1}</div>
+                      <div className="mono">{formatScheduleBlocks(entry.schedule)}</div>
+                    </div>
+                  ))}
+                </article>
+              );
+            })}
+          </div>
+          </section>
+        )}
       </main>
 
       <CatalogPickerModal

@@ -79,6 +79,14 @@ function positiveMod(value, mod) {
   return ((value % mod) + mod) % mod;
 }
 
+function normalizeSearchText(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
 function buildPrereqMap(classes) {
   const map = new Map();
   for (const cls of classes) {
@@ -296,9 +304,9 @@ export default function CurriculumStudio() {
   }, [classes]);
 
   const preparedClasses = useMemo(() => {
-    const query = classSearch.trim().toLowerCase();
+    const query = normalizeSearchText(classSearch);
     const filtered = classes.filter((cls) => {
-      if (query && !`${cls.id} ${cls.name}`.toLowerCase().includes(query)) {
+      if (query && !normalizeSearchText(`${cls.id} ${cls.name}`).includes(query)) {
         return false;
       }
       if (filterMode === 'no_prereq' && (cls.prerequisites || []).length > 0) {
@@ -958,7 +966,7 @@ export default function CurriculumStudio() {
                 .map((id) => classMap.get(id)?.name || `#${id}`)
                 .slice(0, 3);
               const prereqQuery = prereqQueryByClassId[cls.id] || '';
-              const normalizedPrereqQuery = prereqQuery.trim().toLowerCase();
+              const normalizedPrereqQuery = normalizeSearchText(prereqQuery);
 
               const prereqSuggestions = classes
                 .filter((candidate) => {
@@ -971,13 +979,13 @@ export default function CurriculumStudio() {
                   if (!normalizedPrereqQuery) {
                     return true;
                   }
-                  return `${candidate.id} ${candidate.name}`.toLowerCase().includes(normalizedPrereqQuery);
+                  return normalizeSearchText(`${candidate.id} ${candidate.name}`).includes(normalizedPrereqQuery);
                 })
                 .slice(0, 8);
 
               const canQuickCreate =
                 prereqQuery.trim().length > 1 &&
-                !classes.some((candidate) => candidate.name.trim().toLowerCase() === prereqQuery.trim().toLowerCase());
+                !classes.some((candidate) => normalizeSearchText(candidate.name) === normalizedPrereqQuery);
 
               return (
                 <article
