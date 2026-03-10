@@ -266,6 +266,14 @@ body {
   gap: 0.5rem;
 }
 
+@media (min-width: 960px) {
+  .planner-flow-panel > * {
+    width: min(100%, 980px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 @media (min-width: 1200px) {
   .planner-layout.has-result {
     max-width: 1240px;
