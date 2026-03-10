@@ -152,9 +152,9 @@ function runScaleBenchmark() {
 }
 
 function runRealDatasetBenchmark() {
-  console.log('\n== Real Dataset Benchmark (mecatronica-2025C2) ==');
+  console.log('\n== Real Dataset Benchmark (mecatronica-2026C1) ==');
 
-  const datasetPath = path.resolve(process.cwd(), '..', 'mecatronica-2025C2.json');
+  const datasetPath = path.resolve(process.cwd(), 'public/curriculums/mecatronica-2026C1.json');
   const classes = JSON.parse(fs.readFileSync(datasetPath, 'utf8'));
 
   const greedyTimes = [];

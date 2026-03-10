@@ -13,11 +13,44 @@ Repositorio principal del planificador academico, ahora ejecutando la app Next.j
 - API route (`/api/solve`) wired to algorithm stage entrypoint:
   - `src/lib/algorithm/entrypoint.js`
 
+## Current scheduling behavior
+
+The default scheduler is the MIP-based solver exposed through `solveScheduleWithConstraints`.
+
+Its priority order is:
+
+1. Minimize the total number of periods.
+2. Within that optimal period count, rebalance the schedule so earlier curriculum classes stay as early as feasible and period load is more even.
+
+Current defaults and guarantees:
+
+- default maximum of `6` classes per period unless the client sends another value
+- strict prerequisite ordering
+- no same-period time conflicts
+- optional maximum weekly hours per period
+- optional hard filters (`forbiddenDays`, `keepFreeDays`, hard time preference, hard Saturday avoidance)
+- optional soft penalties (time preference, Saturday avoidance)
+
+The solver response metadata can include:
+
+- `optimality`
+- `delegatedSolver`
+- `balancedScheduleApplied`
+- `balanceProfile`
+- `appliedConstraints`
+
 ## Run
 
 ```bash
 npm install
 npm run dev
+```
+
+## Verification
+
+```bash
+npm run test:algorithm
+npm run bench:algorithm
 ```
 
 ## Curriculum format
@@ -31,11 +64,11 @@ The app supports two input styles:
 {
   "formatVersion": "schedule-curriculum-v1",
   "metadata": {
-    "id": "mecatronica-2025C2",
-    "name": "Ingenieria Mecatronica 2025 C2",
+    "id": "mecatronica-2026C1",
+    "name": "Ingenieria Mecatronica 2026 C1",
     "institution": "UNLaM",
     "degree": "Ingenieria Mecatronica",
-    "updatedAt": "2026-02-06T00:00:00.000Z"
+    "updatedAt": "2026-03-10T00:00:00.000Z"
   },
   "classes": [
     {

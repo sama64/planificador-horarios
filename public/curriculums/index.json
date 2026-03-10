@@ -29,6 +29,15 @@
       "lastUpdated": "2026-03-10"
     },
     {
+      "id": "mecanica-2026C1",
+      "name": "Ingenieria Mecanica 2026 C1",
+      "career": "Ingenieria Mecanica",
+      "file": "/curriculums/mecanica-2026C1.json",
+      "universityId": "unlz",
+      "facultyId": "fing-unlz",
+      "lastUpdated": "2026-03-10"
+    },
+    {
       "id": "industrial-2026C1",
       "name": "Ingenieria Industrial 2026 C1",
       "career": "Ingenieria Industrial",
@@ -36,15 +45,6 @@
       "universityId": "unlz",
       "facultyId": "fing-unlz",
       "lastUpdated": "2026-03-10"
-    },
-    {
-      "id": "ferroviaria-2025C2",
-      "name": "Ingenieria Ferroviaria 2025 C2",
-      "career": "Ingenieria Ferroviaria",
-      "file": "/curriculums/ferroviaria-2025C2.json",
-      "universityId": "unlz",
-      "facultyId": "fing-unlz",
-      "lastUpdated": "2026-01-18"
     }
   ]
 }

@@ -15,6 +15,7 @@
   - pick passed classes
   - set optional constraints/preferences
   - generate optimized plan and read it by periods
+- Default planner baseline now includes a `6`-class-per-period cap unless overridden.
 - Mobile-first layout with desktop adaptation.
 - Curriculum Studio (basic but functional):
   - create/edit classes
@@ -40,4 +41,5 @@
 ## Current quality gate
 
 - Webapp build: `cd webapp && npm run build` (passes)
-- Algorithm regressions: `npm run test:algorithm` (21/21 passes)
+- Algorithm regressions: `npm run test:algorithm` (`25/25` passes)
+- Scheduler behavior: minimum periods stays primary objective, then a fixed-horizon balancing pass improves curriculum alignment and load distribution

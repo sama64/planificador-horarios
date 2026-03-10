@@ -16,7 +16,7 @@ const monoFont = IBM_Plex_Mono({
 
 export const metadata = {
   title: 'Planificador de Horarios',
-  description: 'Planificador academico optimizado por periodos con soporte de planes de estudio importables.'
+  description: 'Planificador academico que minimiza periodos y rebalancea la carga por cuatrimestre con soporte de planes de estudio importables.'
 };
 
 export default function RootLayout({ children }) {

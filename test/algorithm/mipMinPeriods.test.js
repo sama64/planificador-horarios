@@ -90,7 +90,7 @@ test('mip solver matches oracle on random small instances', () => {
 });
 
 test('mip solver proves optimum on mecatronica dataset within 5 seconds', () => {
-  const datasetPath = path.resolve(process.cwd(), 'public/curriculums/mecatronica-2025C2.json');
+  const datasetPath = path.resolve(process.cwd(), 'public/curriculums/mecatronica-2026C1.json');
   const classes = JSON.parse(fs.readFileSync(datasetPath, 'utf8'));
 
   const startedAt = performance.now();
@@ -101,7 +101,7 @@ test('mip solver proves optimum on mecatronica dataset within 5 seconds', () => 
 
   assert.equal(result.success, true);
   assert.equal(validatePlan(classes, result).valid, true);
-  assert.equal(result.totalPeriods, 11);
+  assert.equal(result.totalPeriods, 10);
   assert.equal(result.meta.optimality, 'optimal_proven');
   assert.ok(elapsed < 5_000, `mip runtime exceeded 5s: ${elapsed.toFixed(2)}ms`);
 });

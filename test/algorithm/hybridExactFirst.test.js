@@ -66,7 +66,7 @@ test('hybrid solver matches oracle on small random instances', () => {
 });
 
 test('hybrid solver is never worse than greedy on mecatronica dataset', () => {
-  const datasetPath = path.resolve(process.cwd(), 'public/curriculums/mecatronica-2025C2.json');
+  const datasetPath = path.resolve(process.cwd(), 'public/curriculums/mecatronica-2026C1.json');
   const classes = JSON.parse(fs.readFileSync(datasetPath, 'utf8'));
 
   const greedy = solveWithCriticalPathGreedy(classes, {
