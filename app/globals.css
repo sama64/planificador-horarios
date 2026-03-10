@@ -157,6 +157,7 @@ body {
 
 .planner-result {
   min-height: 320px;
+  scroll-margin-top: 1.5rem;
 }
 
 .planner-flow-panel {
@@ -1025,6 +1026,10 @@ button:focus-visible {
 }
 
 @media (max-width: 640px) {
+  .planner-result {
+    scroll-margin-top: 2.4rem;
+  }
+
   .desktop-plan-actions,
   .desktop-restore-button {
     display: none;
