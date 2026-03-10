@@ -10,6 +10,7 @@ import {
   normalizeClasses
 } from '../model.js';
 import { solveWithCriticalPathGreedy } from './criticalPathGreedy.js';
+import { solveWithHybridExactFirst } from './hybridExactFirst.js';
 
 let cachedGlpk = null;
 const require = createRequire(import.meta.url);
@@ -676,7 +677,8 @@ export function solveWithMipMinPeriods(rawClasses, {
   maxWeeklyMinutesPerPeriod = Number.POSITIVE_INFINITY,
   optionPenaltyByClass = null,
   optionWeeklyMinutesByClass = null,
-  greedyPeriodSearchTimeLimitMs = 80
+  greedyPeriodSearchTimeLimitMs = 80,
+  hybridBootstrapTimeLimitMs = 1_500
 } = {}) {
   const startedAt = nowMs();
   const classes = normalizeClasses(rawClasses);
@@ -718,8 +720,41 @@ export function solveWithMipMinPeriods(rawClasses, {
   }
 
   const greedyUpperBound = greedy.totalPeriods;
+  let incumbentFeasible = {
+    assignments: greedy.assignments,
+    totalPeriods: greedy.totalPeriods,
+    source: 'greedy'
+  };
+
+  const remainingAfterGreedyMs = timeoutMs - (nowMs() - startedAt);
+  const shouldTryHybridBootstrap =
+    classes.length > 14
+    && greedyUpperBound > lowerBound
+    && remainingAfterGreedyMs > 250
+    && Number.isFinite(hybridBootstrapTimeLimitMs)
+    && hybridBootstrapTimeLimitMs > 0;
+
+  if (shouldTryHybridBootstrap) {
+    const hybridBootstrap = solveWithHybridExactFirst(classes, {
+      timeoutMs: Math.min(hybridBootstrapTimeLimitMs, Math.max(250, remainingAfterGreedyMs - 50)),
+      maxClassesPerPeriod,
+      greedyPeriodSearchTimeLimitMs,
+      minHorizonSliceMs: 40,
+      maxHorizonSliceMs: 200,
+      retryTimedOutHorizons: true
+    });
+
+    if (hybridBootstrap.success && hybridBootstrap.totalPeriods < incumbentFeasible.totalPeriods) {
+      incumbentFeasible = {
+        assignments: hybridBootstrap.assignments,
+        totalPeriods: hybridBootstrap.totalPeriods,
+        source: 'hybrid'
+      };
+    }
+  }
+
   const hasWeeklyHoursCap = Number.isFinite(maxWeeklyMinutesPerPeriod);
-  const searchUpperBound = hasWeeklyHoursCap ? classes.length : greedyUpperBound;
+  const searchUpperBound = hasWeeklyHoursCap ? classes.length : incumbentFeasible.totalPeriods;
   const hasPenaltyObjective =
     Array.isArray(optionPenaltyByClass)
     && optionPenaltyByClass.some((penalties) => penalties.some((value) => value !== 0));
@@ -733,8 +768,8 @@ export function solveWithMipMinPeriods(rawClasses, {
   let fallbackFeasible = null;
   if (!hasWeeklyHoursCap && !hasPenaltyObjective) {
     fallbackFeasible = {
-      assignments: greedy.assignments,
-      totalPeriods: greedy.totalPeriods
+      assignments: incumbentFeasible.assignments,
+      totalPeriods: incumbentFeasible.totalPeriods
     };
   }
 
@@ -754,6 +789,7 @@ export function solveWithMipMinPeriods(rawClasses, {
             lowerBound,
             upperBound: searchUpperBound,
             greedyUpperBound,
+            bootstrapUpperBoundSource: incumbentFeasible.source,
             horizonChecks,
             unresolvedHorizons: [horizon]
           }
@@ -771,6 +807,7 @@ export function solveWithMipMinPeriods(rawClasses, {
           lowerBound,
           upperBound: searchUpperBound,
           greedyUpperBound,
+          bootstrapUpperBoundSource: incumbentFeasible.source,
           horizonChecks,
           unresolvedHorizons: [horizon]
         }
@@ -826,6 +863,7 @@ export function solveWithMipMinPeriods(rawClasses, {
           lowerBound,
           upperBound: searchUpperBound,
           greedyUpperBound,
+          bootstrapUpperBoundSource: incumbentFeasible.source,
           horizonChecks,
           balancedScheduleApplied: Boolean(balanced),
           balanceProfile: balanced?.balanceProfile ?? null
@@ -844,6 +882,7 @@ export function solveWithMipMinPeriods(rawClasses, {
             lowerBound,
             upperBound: searchUpperBound,
             greedyUpperBound,
+            bootstrapUpperBoundSource: incumbentFeasible.source,
             horizonChecks,
             unresolvedHorizons: [horizon]
           }
@@ -861,6 +900,7 @@ export function solveWithMipMinPeriods(rawClasses, {
           lowerBound,
           upperBound: searchUpperBound,
           greedyUpperBound,
+          bootstrapUpperBoundSource: incumbentFeasible.source,
           horizonChecks,
           unresolvedHorizons: [horizon]
         }
@@ -878,6 +918,7 @@ export function solveWithMipMinPeriods(rawClasses, {
         lowerBound,
         upperBound: searchUpperBound,
         greedyUpperBound,
+        bootstrapUpperBoundSource: incumbentFeasible.source,
         horizonChecks
       }
     };
@@ -911,6 +952,7 @@ export function solveWithMipMinPeriods(rawClasses, {
       lowerBound,
       upperBound: searchUpperBound,
       greedyUpperBound,
+      bootstrapUpperBoundSource: incumbentFeasible.source,
       horizonChecks,
       balancedScheduleApplied: Boolean(balancedFallback),
       balanceProfile: balancedFallback?.balanceProfile ?? null

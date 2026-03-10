@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { solveScheduleWithConstraints } from '../../src/lib/algorithm/entrypoint.js';
 import { validatePlan } from '../../src/lib/algorithm/validate.js';
@@ -178,4 +180,17 @@ test('entrypoint fails when hard constraints remove all options from a class', (
 
   assert.equal(result.success, false);
   assert.ok(result.meta.unschedulableClasses.some((entry) => entry.classId === 1));
+});
+
+test('entrypoint proves the industrial catalog schedule with default constraints', () => {
+  const datasetPath = path.resolve(process.cwd(), 'public/curriculums/industrial-2026C1.json');
+  const classes = JSON.parse(fs.readFileSync(datasetPath, 'utf8'));
+
+  const result = solveScheduleWithConstraints(classes, {});
+
+  assert.equal(result.success, true);
+  assert.equal(result.totalPeriods, 10);
+  assert.equal(result.meta.optimality, 'optimal_proven');
+  assert.equal(result.meta.bootstrapUpperBoundSource, 'hybrid');
+  assert.equal(validatePlan(classes, result, { maxClassesPerPeriod: 6 }).valid, true);
 });
