@@ -147,7 +147,7 @@ body {
 }
 
 .planner-layout.has-result {
-  max-width: 1180px;
+  max-width: 1240px;
 }
 
 .planner-steps {
@@ -268,8 +268,7 @@ body {
 
 @media (min-width: 1200px) {
   .planner-layout.has-result {
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-    align-items: start;
+    max-width: 1240px;
   }
 
   .planner-steps {
@@ -278,8 +277,6 @@ body {
 
   .planner-result {
     min-height: 420px;
-    position: sticky;
-    top: 1rem;
   }
 }
 
