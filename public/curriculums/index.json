@@ -26,16 +26,16 @@
       "file": "/curriculums/mecatronica-2026C1.json",
       "universityId": "unlz",
       "facultyId": "fing-unlz",
-      "lastUpdated": "2026-03-09"
+      "lastUpdated": "2026-03-10"
     },
     {
-      "id": "industrial-2025C2",
-      "name": "Ingenieria Industrial 2025 C2",
+      "id": "industrial-2026C1",
+      "name": "Ingenieria Industrial 2026 C1",
       "career": "Ingenieria Industrial",
-      "file": "/curriculums/industrial-2025C2.json",
+      "file": "/curriculums/industrial-2026C1.json",
       "universityId": "unlz",
       "facultyId": "fing-unlz",
-      "lastUpdated": "2026-01-18"
+      "lastUpdated": "2026-03-10"
     },
     {
       "id": "ferroviaria-2025C2",
