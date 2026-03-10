@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -136,6 +136,7 @@ const FLOW_STEPS = [
 
 export default function SchedulerWorkspace() {
   const pathname = usePathname();
+  const stepperRef = useRef(null);
   const [catalog, setCatalog] = useState([]);
   const [catalogUniversities, setCatalogUniversities] = useState([]);
   const [catalogFaculties, setCatalogFaculties] = useState([]);
@@ -428,6 +429,26 @@ export default function SchedulerWorkspace() {
       setCurrentStep(3);
     }
   }, [availableStepIds, classes.length, currentStep, curriculum, result]);
+
+  useEffect(() => {
+    const stepper = stepperRef.current;
+    if (!stepper) {
+      return;
+    }
+
+    const activeStepButton = stepper.querySelector(`[data-step-id="${currentStep}"]`);
+    if (!(activeStepButton instanceof HTMLElement)) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      activeStepButton.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    });
+  }, [currentStep, availableStepIds]);
 
   const currentStepIndex = FLOW_STEPS.findIndex((step) => step.id === currentStep);
   const currentStepMeta = FLOW_STEPS[currentStepIndex] || FLOW_STEPS[0];
@@ -886,7 +907,7 @@ export default function SchedulerWorkspace() {
         <section className="planner-steps">
           <article className="surface panel planner-flow-panel">
             <div className="planner-flow-head">
-              <div className="planner-stepper planner-stepper-horizontal" aria-label="Pasos del planificador">
+              <div ref={stepperRef} className="planner-stepper planner-stepper-horizontal" aria-label="Pasos del planificador">
                 {FLOW_STEPS.map((step) => {
                   const unlocked = availableStepIds.has(step.id);
                   const completed = unlocked && step.id < currentStep;
@@ -894,6 +915,7 @@ export default function SchedulerWorkspace() {
                     <button
                       key={step.id}
                       type="button"
+                      data-step-id={step.id}
                       className={`planner-step-chip ${currentStep === step.id ? 'active' : ''} ${completed ? 'completed' : ''}`}
                       onClick={() => goToStep(step.id)}
                       disabled={!unlocked}
