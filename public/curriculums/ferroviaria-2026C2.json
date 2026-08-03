@@ -1,0 +1,1389 @@
+[
+  {
+    "id": 1,
+    "name": "Medios de Representación Gráfica I",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [],
+    "code": "0_001"
+  },
+  {
+    "id": 2,
+    "name": "Fundamentos de Programación Informática",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [],
+    "code": "0_006"
+  },
+  {
+    "id": 3,
+    "name": "Inglés",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [],
+    "code": "0_003"
+  },
+  {
+    "id": 4,
+    "name": "Introducción a la Ingeniería",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [],
+    "code": "0_002"
+  },
+  {
+    "id": 5,
+    "name": "Laboratorio y Taller de Material Rodante e Infraestructura",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [],
+    "code": "4_002"
+  },
+  {
+    "id": 6,
+    "name": "Medios de Representación Gráfica II",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      1
+    ],
+    "code": "0_005"
+  },
+  {
+    "id": 7,
+    "name": "Informática Aplicada a la Planificación y Programación Ferroviaria",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      2,
+      5
+    ],
+    "code": "4_004"
+  },
+  {
+    "id": 8,
+    "name": "Legislación y Ejercicio Profesional",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      4
+    ],
+    "code": "0_013"
+  },
+  {
+    "id": 9,
+    "name": "Gestión de la Calidad",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      4
+    ],
+    "code": "0_004"
+  },
+  {
+    "id": 10,
+    "name": "Economía",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "14:00",
+            "endTime": "16:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "16:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      4
+    ],
+    "code": "0_010"
+  },
+  {
+    "id": 11,
+    "name": "Infraestructura Ferroviaria I",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      1,
+      4
+    ],
+    "code": "4_003"
+  },
+  {
+    "id": 12,
+    "name": "Matemática I",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      2
+    ],
+    "code": "0_011"
+  },
+  {
+    "id": 13,
+    "name": "Introducción a la Gestión de la Innovación y la Tecnología",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "16:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      3,
+      4
+    ],
+    "code": "0_012"
+  },
+  {
+    "id": 14,
+    "name": "Transporte Ferroviario",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      4,
+      6
+    ],
+    "code": "4_005"
+  },
+  {
+    "id": 15,
+    "name": "Fundamentos de Química",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      4
+    ],
+    "code": "0_018"
+  },
+  {
+    "id": 16,
+    "name": "Organización y Gestión Industrial",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      10
+    ],
+    "code": "0_014"
+  },
+  {
+    "id": 17,
+    "name": "Física I",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      12
+    ],
+    "code": "0_016"
+  },
+  {
+    "id": 18,
+    "name": "Matemática II",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      12
+    ],
+    "code": "0_019"
+  },
+  {
+    "id": 19,
+    "name": "Higiene y Seguridad en el Trabajo I",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "14:00",
+            "endTime": "16:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "16:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      8
+    ],
+    "code": "0_007"
+  },
+  {
+    "id": 20,
+    "name": "Probabilidad y Estadística",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      9,
+      12
+    ],
+    "code": "0_023"
+  },
+  {
+    "id": 21,
+    "name": "Física II",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      17
+    ],
+    "code": "0_022"
+  },
+  {
+    "id": 22,
+    "name": "Termodinámica",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      15,
+      17
+    ],
+    "code": "0_021"
+  },
+  {
+    "id": 23,
+    "name": "Cálculo I",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "14:00",
+            "endTime": "18:00"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      18
+    ],
+    "code": "0_020"
+  },
+  {
+    "id": 24,
+    "name": "Higiene y Seguridad en el Trabajo II",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      17,
+      19
+    ],
+    "code": "0_025"
+  },
+  {
+    "id": 25,
+    "name": "Vigilancia Tecnológica e Inteligencia Competitiva",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "20:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "20:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      8,
+      13
+    ],
+    "code": "0_040"
+  },
+  {
+    "id": 26,
+    "name": "Estática",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      17
+    ],
+    "code": "0_024"
+  },
+  {
+    "id": 27,
+    "name": "Ingeniería Ambiental",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      20
+    ],
+    "code": "0_046"
+  },
+  {
+    "id": 28,
+    "name": "Cálculo II",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      23
+    ],
+    "code": "0_026"
+  },
+  {
+    "id": 29,
+    "name": "Infraestructura Ferroviaria II",
+    "hours": 32,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "10:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      11,
+      12
+    ],
+    "code": "4_006"
+  },
+  {
+    "id": 30,
+    "name": "Investigación Operativa",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      18,
+      20
+    ],
+    "code": "0_045"
+  },
+  {
+    "id": 31,
+    "name": "Fundamentos de Electrónica",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      21
+    ],
+    "code": "0_044"
+  },
+  {
+    "id": 32,
+    "name": "Ciencia y Tecnlogía de los Materiales",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      15
+    ],
+    "code": "0_029"
+  },
+  {
+    "id": 33,
+    "name": "Electrotecnia",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Sabado",
+            "startTime": "08:30",
+            "endTime": "12:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      21,
+      28
+    ],
+    "code": "0_030"
+  },
+  {
+    "id": 34,
+    "name": "Material Rodante",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      5,
+      14,
+      22
+    ],
+    "code": "4_007"
+  },
+  {
+    "id": 35,
+    "name": "Mecánica de los Materiales",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      26
+    ],
+    "code": "0_028"
+  },
+  {
+    "id": 36,
+    "name": "Máquinas Térmicas",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      22
+    ],
+    "code": "0_039"
+  },
+  {
+    "id": 37,
+    "name": "Mecánica de los Fluídos",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      },
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      22,
+      28
+    ],
+    "code": "0_035"
+  },
+  {
+    "id": 38,
+    "name": "Máquinas Eléctricas e Instalaciones de Electrificación",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      33
+    ],
+    "code": "4_009"
+  },
+  {
+    "id": 39,
+    "name": "Mecánica de la Tracción",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      34
+    ],
+    "code": "4_008"
+  },
+  {
+    "id": 40,
+    "name": "Operación Ferroviaria",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      7,
+      30
+    ],
+    "code": "4_012"
+  },
+  {
+    "id": 41,
+    "name": "Diseño de Componentes Ferroviarios y Tecnologías de Fabricación",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      6,
+      32,
+      34
+    ],
+    "code": "4_010"
+  },
+  {
+    "id": 42,
+    "name": "Modelado y Dinámica de Sistemas Ferroviarios",
+    "hours": 128,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      28,
+      35,
+      39
+    ],
+    "code": "4_011"
+  },
+  {
+    "id": 43,
+    "name": "Mantenimiento Ferroviario",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      16,
+      29,
+      34
+    ],
+    "code": "4_013"
+  },
+  {
+    "id": 44,
+    "name": "Automatización y Sistemas de Control",
+    "hours": 96,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Lunes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          },
+          {
+            "day": "Jueves",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      31,
+      37
+    ],
+    "code": "4_014"
+  },
+  {
+    "id": 45,
+    "name": "Señalamiento y Comunicaciones",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Martes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      31,
+      40
+    ],
+    "code": "4_016"
+  },
+  {
+    "id": 46,
+    "name": "Evaluación Económica de Inversiones Ferroviarias",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Miercoles",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      40,
+      43
+    ],
+    "code": "4_015"
+  },
+  {
+    "id": 47,
+    "name": "Proyecto en Ingeniería Ferroviaria",
+    "hours": 64,
+    "scheduleOptions": [
+      {
+        "schedule": [
+          {
+            "day": "Viernes",
+            "startTime": "18:30",
+            "endTime": "22:30"
+          }
+        ]
+      }
+    ],
+    "prerequisites": [
+      25,
+      27,
+      40,
+      41,
+      42,
+      43
+    ],
+    "code": "4_017"
+  }
+]
