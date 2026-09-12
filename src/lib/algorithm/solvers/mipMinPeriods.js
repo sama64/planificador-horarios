@@ -766,7 +766,11 @@ export function solveWithMipMinPeriods(rawClasses, {
 
   const horizonChecks = [];
   let fallbackFeasible = null;
-  if (!hasWeeklyHoursCap && !hasPenaltyObjective) {
+  // A soft preference affects ranking, not feasibility. Keep the greedy
+  // incumbent as a valid fallback when GLPK cannot prove the preferred
+  // optimum before the timeout. A weekly-hours cap is different: the greedy
+  // bootstrap does not enforce it, so it cannot be used safely there.
+  if (!hasWeeklyHoursCap) {
     fallbackFeasible = {
       assignments: incumbentFeasible.assignments,
       totalPeriods: incumbentFeasible.totalPeriods

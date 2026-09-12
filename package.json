@@ -4,6 +4,7 @@
   "version": "0.2.0",
   "type": "module",
   "scripts": {
+    "agent:planner": "node scripts/agent-planner.js",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

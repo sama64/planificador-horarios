@@ -53,6 +53,24 @@ npm run test:algorithm
 npm run bench:algorithm
 ```
 
+## Agent CLI
+
+The local CLI exposes the bundled catalogs and solver as structured JSON. It
+defaults to `mecatronica-2026C2` when no curriculum is specified.
+
+```bash
+npm run agent:planner -- catalog
+npm run agent:planner -- curriculum mecatronica-2026C2
+npm run agent:planner -- solve --json '{"passedClasses":[1,"Introducción a la Ingeniería"],"constraints":{"avoidSaturdays":true}}'
+printf '%s' '{"passedClasses":[1,2]}' | npm run agent:planner -- solve
+```
+
+`passedClasses` accepts curriculum IDs or exact class names (case and accents
+are ignored). The regular solver constraints remain available under
+`constraints`, and solver tuning remains available under `solverOptions`. The
+CLI uses a 15-second solver timeout by default; this can be overridden with
+`solverOptions.timeoutMs`.
+
 ## Curriculum format
 
 The app supports two input styles:
