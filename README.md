@@ -59,10 +59,10 @@ The local CLI exposes the bundled catalogs and solver as structured JSON. It
 defaults to `mecatronica-2026C2` when no curriculum is specified.
 
 ```bash
-npm run agent:planner -- catalog
-npm run agent:planner -- curriculum mecatronica-2026C2
-npm run agent:planner -- solve --json '{"passedClasses":[1,"Introducción a la Ingeniería"],"constraints":{"avoidSaturdays":true}}'
-printf '%s' '{"passedClasses":[1,2]}' | npm run agent:planner -- solve
+node scripts/agent-planner.js catalog
+node scripts/agent-planner.js curriculum mecatronica-2026C2
+node scripts/agent-planner.js solve --json '{"passedClasses":[1,"Introducción a la Ingeniería"],"constraints":{"avoidSaturdays":true}}'
+printf '%s' '{"passedClasses":[1,2]}' | node scripts/agent-planner.js solve
 ```
 
 `passedClasses` accepts curriculum IDs or exact class names (case and accents

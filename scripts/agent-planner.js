@@ -40,7 +40,7 @@ function readRequest(args) {
 function usage() {
   return {
     success: false,
-    error: 'Usage: agent:planner catalog | curriculum [ID] | solve [--input FILE|- | --json JSON]'
+    error: 'Usage: node scripts/agent-planner.js catalog | curriculum [ID] | solve [--input FILE|- | --json JSON]'
   };
 }
 
